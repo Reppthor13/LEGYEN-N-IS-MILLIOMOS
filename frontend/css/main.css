@@ -2,3 +2,8 @@ body{
     background-color: lightcoral;
     color:yellowgreen;
 }
+.labbel{
+    font-size: larger;
+    font-weight: bolder;
+    margin-top: 1%;
+}

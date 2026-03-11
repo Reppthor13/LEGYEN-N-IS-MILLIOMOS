@@ -12,6 +12,7 @@ body{
 }
 #kerdesSpace{
     background-color: rgba(71, 65, 156, 0.87);
+    backdrop-filter: blur(15px);
     padding: 2%;
     border: 2px solid black;
     border-top-right-radius: 5px;
