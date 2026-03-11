@@ -21,5 +21,92 @@
             <label class="labbel">Jelszó</label>
             <input type="password">
         </div>
+        <h2>Regisztráció</h2>
+
+        <form id="registerForm">
+            <input name="username" placeholder="username" />
+            <input name="display_name" placeholder="display name" />
+            <input name="password" type="password" placeholder="password" />
+            <input name="passwordConfirm" type="password" placeholder="password" />
+            <button type="submit">Regisztráció</button>
+        </form>
+
+        <hr />
+
+        <h2>Bejelentkezés</h2>
+
+        <form id="loginForm">
+            <input name="username" placeholder="username" required />
+            <input name="password" type="password" placeholder="password" required />
+            <button type="submit">Bejelentkezés</button>
+        </form>
+
+        <hr />
+
+        <button id="logoutBtn">Kijelentkezés</button>
+        <button id="deleteBtn">Profil törlés</button>
+
+        <hr />
+
+        <h3>Válasz</h3>
+        <pre id="result"></pre>
+
+        <script>
+            const API = 'http://localhost:3000';
+
+            function show(data) {
+                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+            }
+
+            document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(e.target);
+
+                const res = await fetch('/api/users', {
+                    method: 'POST',
+                    credentials: 'include',
+                    body: formData
+                });
+
+                const data = await res.json();
+                show(data);
+            });
+
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(e.target);
+
+                const res = await fetch('/api/sessions', {
+                    method: 'POST',
+                    credentials: 'include',
+                    body: formData
+                });
+
+                const data = await res.json();
+                show(data);
+            });
+
+            document.getElementById('logoutBtn').addEventListener('click', async () => {
+                const res = await fetch('/api/sessions', {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                const data = await res.json();
+                show(data);
+            });
+
+            document.getElementById('deleteBtn').addEventListener('click', async () => {
+                const res = await fetch('/api/users', {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                const data = await res.json();
+                show(data);
+            });
+        </script>
     </body>
 </html>
