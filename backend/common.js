@@ -11,3 +11,26 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
+function createResponse(success, result, message = null) {
+    return {
+        success,
+        result,
+        message
+    };
+}
+
+function authenticate(request, response, next) {
+    if (!request.session.user)
+        response.status(403).json(createResponse(false, null, 'Bejelentkezés szükséges'));
+    else next();
+}
+
+function authenticate2(request, response, next) {
+    if (!request.session.user) next();
+    else
+        response
+            .status(403)
+            .json(createResponse(true, request.session.user, 'MÁR RÉG BE VAGY JELETKEZVE!'));
+}
+module.exports = { upload, createResponse, authenticate, authenticate2 };
