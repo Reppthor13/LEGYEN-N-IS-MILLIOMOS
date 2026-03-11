@@ -1,0 +1,18 @@
+body{
+    background-color: darkslateblue;
+    color:blanchedalmond;
+}
+#kerdesSpace{
+    background-color: cornflowerblue;
+}
+#kerdesText{
+    font-family: 'Courier New', Courier, monospace;
+    outline-color: cyan;
+}
+#valaszSpace{
+    background-color: dodgerblue;
+}
+.valaszText{
+    font-family: 'Times New Roman', Times, serif;
+    outline-color: aquamarine;
+}
