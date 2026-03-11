@@ -1,0 +1,53 @@
+body{
+    color:blanchedalmond;
+    font-family: 'Courier New', Courier, monospace;
+    background-image: url("../images/image.jpg");
+    min-height: 100vh;
+    background-size: cover;
+    background-position: right 50% top 0%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow-y: hidden;
+    opacity: 87%;
+}
+#kerdesSpace{
+    background-color: rgba(71, 65, 156, 0.87);
+    backdrop-filter: blur(15px);
+    padding: 2%;
+    border: 2px solid black;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    width: 50%;
+    margin-top: 0;
+    z-index: 1000;
+    margin-top: 32%;
+    position: relative;
+}
+#kerdesText{
+    font-weight: bolder;
+    color:blanchedalmond;
+}
+#valaszSpace{
+    background-color: rgba(172, 148, 218, 0.87);
+    width: 50%;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.valaszText{
+    font-weight: 600;
+    font-size: large;
+    padding: 1%;
+    border: 1px solid black;
+    border-top: none;
+    margin-bottom: 0;
+    background: inherit;
+    color:blanchedalmond;
+}
+#valasz4{
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.valaszText:hover{
+    background-color:rgba(136, 127, 255, 0.87);
+    color:black
+}
