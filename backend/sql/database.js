@@ -60,11 +60,52 @@ function logoutuser(request, response) {
     });
 }
 
+async function randomquestion(request) {
+    const difficulty = request.session.difficulty;
+
+    const query = 'SELECT * FROM kedesek WHERE nehezseg = ? ORDER BY RAND() LIMIT 1';
+    const [rows] = await pool.execute(query, [difficulty]);
+
+    if (!rows.length) throw { code: 'NOKERDES' };
+
+    return rows[0];
+}
+
+async function selectquestion(request) {
+    const kid = request.session.qid;
+
+    const query = 'SELECT * FROM kedesek WHERE nehezseg = ? ORDER BY RAND() LIMIT 1';
+    const [rows] = await pool.execute(query, [kid]);
+
+    return rows[0];
+}
+
+async function selectanswers(kid) {
+    const query = 'SELECT id, valasz FROM valaszok WHERE kid = ?';
+    const [rows] = await pool.execute(query, [kid]);
+    return rows;
+}
+
+async function checkanswer(request) {
+    const query = 'SELECT id, kid FROM valaszok WHERE id = ? AND kid = ? AND helyes = TRUE';
+    const [rows] = await pool.execute(query, [request.body.qid, request.session.game.kid]);
+
+    if (!rows.length) {
+        return false;
+    }
+
+    return true;
+}
+
 //!Export
 module.exports = {
     selectall,
     createuser,
     deleteuser,
     logoutuser,
-    loginuser
+    loginuser,
+    randomquestion,
+    selectquestion,
+    selectanswers,
+    checkanswer
 };

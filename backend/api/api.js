@@ -3,6 +3,7 @@ const router = express.Router();
 const database = require('../sql/database.js');
 const users = require('./users.js');
 const sessions = require('./sessions.js');
+const game = require('./game.js');
 const fs = require('fs/promises');
 
 //!Endpoints:
@@ -30,5 +31,6 @@ router.get('/testsql', async (request, response) => {
 
 router.use('/users', users);
 router.use('/sessions', sessions);
+router.use('/game', game);
 
 module.exports = router;
