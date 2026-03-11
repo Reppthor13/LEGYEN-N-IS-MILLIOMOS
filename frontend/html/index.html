@@ -2,96 +2,29 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>Session teszt</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Főoldal</title>
+        <!--!Bootstrap-->
+        <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+        <!--?Popper: dropdowns, popovers, tooltips-->
+        <script src="../bootstrap/js/popper.min.js"></script>
+        <script src="../bootstrap/js/bootstrap.min.js"></script>
+        <!--!CSS-->
+        <link rel="stylesheet" href="../css/index.css" />
+        <!--!JavaScript-->
+        <script src="../javascript/index.js"></script>
     </head>
-
     <body>
-        <h2>Regisztráció</h2>
-
-        <form id="registerForm">
-            <input name="username" placeholder="username" />
-            <input name="display_name" placeholder="display name" />
-            <input name="password" type="password" placeholder="password" />
-            <input name="passwordConfirm" type="password" placeholder="password" />
-            <button type="submit">Regisztráció</button>
-        </form>
-
-        <hr />
-
-        <h2>Bejelentkezés</h2>
-
-        <form id="loginForm">
-            <input name="username" placeholder="username" required />
-            <input name="password" type="password" placeholder="password" required />
-            <button type="submit">Bejelentkezés</button>
-        </form>
-
-        <hr />
-
-        <button id="logoutBtn">Kijelentkezés</button>
-        <button id="deleteBtn">Profil törlés</button>
-
-        <hr />
-
-        <h3>Válasz</h3>
-        <pre id="result"></pre>
-
-        <script>
-            const API = 'http://localhost:3000';
-
-            function show(data) {
-                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
-            }
-
-            document.getElementById('registerForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                const formData = new FormData(e.target);
-
-                const res = await fetch('/api/users', {
-                    method: 'POST',
-                    credentials: 'include',
-                    body: formData
-                });
-
-                const data = await res.json();
-                show(data);
-            });
-
-            document.getElementById('loginForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                const formData = new FormData(e.target);
-
-                const res = await fetch('/api/sessions', {
-                    method: 'POST',
-                    credentials: 'include',
-                    body: formData
-                });
-
-                const data = await res.json();
-                show(data);
-            });
-
-            document.getElementById('logoutBtn').addEventListener('click', async () => {
-                const res = await fetch('/api/sessions', {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
-
-                const data = await res.json();
-                show(data);
-            });
-
-            document.getElementById('deleteBtn').addEventListener('click', async () => {
-                const res = await fetch('/api/users', {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
-
-                const data = await res.json();
-                show(data);
-            });
-        </script>
+        <div class="container-fluid text-center">
+            <center><div class="row text-center" id="kerdesSpace">
+                <h2 id="kerdesText">Ez egy kérdés</h2>
+            </div>
+            <div class="row text-center" id="valaszSpace">
+                <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
+                <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
+                <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
+                <input type="button" class="valaszText" id="valasz valasz4" value="Ez egy válasz"></input>
+            </div></center>
+        </div>
     </body>
 </html>
