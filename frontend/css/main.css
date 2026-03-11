@@ -1,9 +1,8 @@
 body{
-    background-color: lightcoral;
-    color:yellowgreen;
+    background-color:steelblue;
+    color:darkslateblue;
 }
-.labbel{
-    font-size: larger;
-    font-weight: bolder;
-    margin-top: 1%;
+.gonb{
+    background-color:rgb(140, 165, 190);
+    color:rgb(230, 215, 200);
 }
