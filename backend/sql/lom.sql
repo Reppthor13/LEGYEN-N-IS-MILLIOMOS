@@ -18,6 +18,7 @@ USE `lom`;
 
 CREATE TABLE users(
 	username VARCHAR(69) PRIMARY KEY,
+	display_name VARCHAR(69) NOT NULL,
 	password_hash CHAR(60) NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
