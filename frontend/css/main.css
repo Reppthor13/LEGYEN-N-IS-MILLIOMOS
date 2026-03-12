@@ -31,3 +31,8 @@ hr{
     height:2px;
     background:lightskyblue;
 }
+::selection {
+    background: lightskyblue;
+    color: black;
+    text-shadow: none;
+}

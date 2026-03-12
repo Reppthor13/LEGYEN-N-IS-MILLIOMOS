@@ -66,10 +66,17 @@ h3{
     font-size: x-large;
     width: 10vw;
     box-shadow: 0 9px #bdbdbd;
-  }
-  #supmit:hover {background-color: blanchedalmond}
-  #supmit:active {
+}
+#supmit:hover {
+    background-color: blanchedalmond
+}
+#supmit:active {
     background-color: blanchedalmond;
     box-shadow: 0 2.5px #bdbdbd;
     transform: translateY(5px);
-  }
+}
+::selection {
+    background: blanchedalmond;
+    color: darkolivegreen;
+    text-shadow: none;
+}
