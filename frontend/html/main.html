@@ -15,32 +15,34 @@
         <script src="../javascript/main.js"></script>
     </head>
     <body>
-        <center><h2>Regisztráció</h2>
+        <center>
+            <h2>Regisztráció</h2>
 
-        <form id="registerForm">
-            <input name="username" placeholder="Username" />
-            <input name="display_name" placeholder="Display name" />
-            <input name="password" type="password" placeholder="Password" />
-            <input name="passwordConfirm" type="password" placeholder="Password" />
-            <button type="submit" class="gonb">Regisztráció</button>
-        </form>
+            <form id="registerForm">
+                <input name="username" placeholder="Username" />
+                <input name="display_name" placeholder="Display name" />
+                <input name="password" type="password" placeholder="Password" />
+                <input name="passwordConfirm" type="password" placeholder="Password" />
+                <button type="submit" class="gonb">Regisztráció</button>
+            </form>
+
+            <hr />
+
+            <h2>Bejelentkezés</h2>
+
+            <form id="loginForm">
+                <input name="username" placeholder="Username" required />
+                <input name="password" type="password" placeholder="Password" required />
+                <button type="submit" class="gonb">Bejelentkezés</button>
+            </form>
+
+            <hr />
+
+            <button id="logoutBtn" class="gonb">Kijelentkezés</button>
+            <button id="deleteBtn" class="gonb">Profil törlése</button>
+        </center>
 
         <hr />
-
-        <h2>Bejelentkezés</h2>
-
-        <form id="loginForm">
-            <input name="username" placeholder="Username" required />
-            <input name="password" type="password" placeholder="Password" required />
-            <button type="submit" class="gonb">Bejelentkezés</button>
-        </form>
-
-        <hr />
-
-        <button id="logoutBtn" class="gonb">Kijelentkezés</button>
-        <button id="deleteBtn" class="gonb">Profil törlése</button></center>
-
-        <!--<hr />
 
         <h3>Válasz</h3>
         <pre id="result"></pre>
@@ -101,6 +103,6 @@
                 const data = await res.json();
                 show(data);
             });
-        </script> -->
+        </script>
     </body>
 </html>

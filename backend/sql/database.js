@@ -1,6 +1,8 @@
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
 
+const { createResponse } = require('../common.js');
+
 const pool = mysql.createPool({
     host: '127.0.0.1',
     user: 'root',

@@ -99,10 +99,16 @@ function abort(request) {
 
 function finish(request) {
     const game = request.session.game;
-    const level = game.difficulty;
+    let level = game.difficulty;
 
     if (game.aborted) {
-        game.reward = rewards[level];
+        if (game.answered) {
+            game.reward = rewards[level];
+        } else {
+            level -= 1;
+            if (level < 0) level = 0;
+            game.reward = rewards[level];
+        }
         return;
     }
 

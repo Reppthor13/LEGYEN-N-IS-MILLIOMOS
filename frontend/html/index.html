@@ -17,70 +17,88 @@
     </head>
     <body>
         <state-provider src="/api/game" disable-auto-update>
-            <div class="container-fluid text-center">
-                <center>
-                    <render-if when="!local.question && !local.ended">
-                        <div>A játék indítása</div>
-                        <h3 subscribe-to="message"></h3>
-                        <smart-form-wrapper url="/api/game?action=start" method="GET" refresh-target="state-provider">
-                            <form>
-                                <button>Indít</button>
-                            </form>
-                        </smart-form-wrapper>
-                    </render-if>
+            <state-provider as="user" src="/api/sessions" method="POST"></state-provider>
 
-                    <render-if when="!local.ended">
-                        <div class="row text-center" id="kerdesSpace">
-                            <h1 stye="color: white" subscribe-to="question.id"></h1>
-                            <h2 subscribe-to="question.kerdes" id="kerdesText">Ez egy kérdés</h2>
+            <render-if state="user" when="!local.username">
+                <h1>Be kell jelentkezni!</h1>
+                <a href="/main">Belépés</a>
+            </render-if>
+
+            <render-if state="user" when="local.username">
+                <div class="container-fluid text-center">
+                    <center>
+                        <render-if when="!local.question && !local.ended">
+                            <div>A játék indítása</div>
+                            <h3 subscribe-to="message"></h3>
+                            <smart-form-wrapper url="/api/game?action=start" method="GET" refresh-target="state-provider">
+                                <form>
+                                    <button>Indít/folytatása</button>
+                                </form>
+                            </smart-form-wrapper>
+                        </render-if>
+    
+                        <render-if when="!local.ended">
+                            <div class="row text-center" id="kerdesSpace">
+                                <h1 stye="color: white" subscribe-to="question.id"></h1>
+                                <h2 subscribe-to="question.kerdes" id="kerdesText">Ez egy kérdés</h2>
+                            </div>
+                            <div class="row text-center" id="valaszSpace">
+                                <collection-view items-source="answers" subscribe>
+                                    <template>
+                                        <div class="item">
+                                            <smart-form-wrapper
+                                                url="/api/game"
+                                                method="POST"
+                                                refresh-target="state-provider"
+                                            >
+                                                <form>
+                                                    <input
+                                                        name="aid"
+                                                        type="hidden"
+                                                        data-bind="id"
+                                                        bind-target="value"
+                                                    />
+                                                    <button>
+                                                        <h2 class="valaszText" data-bind="valasz"></h2>
+                                                    </button>
+                                                </form>
+                                            </smart-form-wrapper>
+                                        </div>
+                                    </template>
+                                </collection-view>
+                            </div>
+                        </render-if>
+    
+                        <render-if when="local.question">
+                            <div>Játék pefejezésebv :DDD</div>
+                            <smart-form-wrapper url="/api/game?action=abort" method="GET" refresh-target="state-provider">
+                                <form>
+                                    <button>Meksakít</button>
+                                </form>
+                            </smart-form-wrapper>
+                        </render-if>
+    
+                        <render-if when="local.ended">
+                            <div>A játék véget ért</div>
+                            <h6>QNyqERQ1ményqetQ:q <span subscribe-to="reward"></span></h6>
+                            <h3 subscribe-to="message"></h3>
+                            <smart-form-wrapper url="/api/game?action=start" method="GET" refresh-target="state-provider">
+                                <form>
+                                    <button>Új</button>
+                                </form>
+                            </smart-form-wrapper>
+                        </render-if>
+    
+                            <!-- <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
+                        <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
+                        <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
+                        <input type="button" class="valaszText" id="valasz valasz4" value="Ez egy válasz"></input> -->
                         </div>
-                        <div class="row text-center" id="valaszSpace">
-                            <collection-view items-source="answers" subscribe>
-                                <template>
-                                    <div class="item">
-                                        <smart-form-wrapper
-                                            url="/api/game"
-                                            method="POST"
-                                            refresh-target="state-provider"
-                                        >
-                                            <form>
-                                                <input
-                                                    name="aid"
-                                                    type="hidden"
-                                                    data-bind="id"
-                                                    bind-target="value"
-                                                />
-                                                <button>
-                                                    <h2 class="valaszText" data-bind="valasz"></h2>
-                                                </button>
-                                            </form>
-                                        </smart-form-wrapper>
-                                    </div>
-                                </template>
-                            </collection-view>
-                        </div>
-                    </render-if>
-
-                    <render-if when="local.ended">
-                        <div>A játék véget ért</div>
-                        <h6>QNyqERQ1ményqetQ:q <span subscribe-to="reward"></span></h6>
-                        <h3 subscribe-to="message"></h3>
-                        <smart-form-wrapper url="/api/game?action=start" method="GET" refresh-target="state-provider">
-                            <form>
-                                <button>Új</button>
-                            </form>
-                        </smart-form-wrapper>
-                    </render-if>
-
-                        <!-- <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
-                    <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
-                    <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
-                    <input type="button" class="valaszText" id="valasz valasz4" value="Ez egy válasz"></input> -->
-                    </div>
-
-                 
-                </center>
-            </div>
+    
+                     
+                    </center>
+                </div>
+            </render-if>
         </state-provider>
     </body>
 </html>
