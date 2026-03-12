@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Főoldal</title>
+        <title>Admin</title>
         <!--!Bootstrap-->
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
         <!--?Popper: dropdowns, popovers, tooltips-->
@@ -16,7 +16,24 @@
     </head>
     <body>
         <div class="container-fluid text-center">
-            <p>Te most nagyon admin vagy bro</p>
+            <h1>Admin</h1>
+        </div><br>  
+        <div class="container-fluid egesz">
+            <center><div>
+                <h3>Kérdés hozzáadása</h3>
+            </div>
+            <div>
+                <input type="text" id="ujKerdes" placeholder="Ide írd a kérdést">
+            </div>
+            <div>
+                <input type="text" class="ujValasz" id="jo" placeholder="Jó válasz">
+                <input type="text" class="ujValasz" id="rossz" placeholder="Rossz válasz">
+                <input type="text" class="ujValasz" id="rossz" placeholder="Rossz válasz">
+                <input type="text" class="ujValasz" id="rossz" placeholder="Rossz válasz">
+            </div>
+            <div>
+                <input type="submit" id="supmit" value="Mentés">
+            </div></center>
         </div>
     </body>
 </html>
