@@ -1,8 +1,38 @@
 body{
     background-color:steelblue;
-    color:darkslateblue;
+    color:blanchedalmond;
+    margin: 5%;
+    font-family: 'Courier New', Courier, monospace;
 }
 .gonb{
-    background-color:rgb(125, 150, 175);
-    color:rgb(230, 215, 205);
+    background-color:lightskyblue;
+    color:black;
+    border-color: black;
+    font-weight: 600;
+    padding: 5px;
+    font-size: large;
+}
+input{
+    background-color: rgb(250, 240, 225);
+    font-weight: 600;
+    padding: 5px;
+    font-size: large;
+    text-align: center;
+}
+h2{
+    font-weight: bold;
+    margin-top: 5%;
+    margin-bottom: 2.5%;
+}
+form{
+    margin-bottom: 5%;
+}
+hr{
+    height:2px;
+    background:lightskyblue;
+}
+::selection {
+    background: lightskyblue;
+    color: black;
+    text-shadow: none;
 }

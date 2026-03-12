@@ -1,4 +1,82 @@
 body{
     background-color: darkolivegreen;
-    color:beige;
+    color:blanchedalmond;
+    font-family: 'Courier New', Courier, monospace;
+}
+h1{
+    font-weight: bolder;
+}
+h3{
+    font-weight: bold;
+    margin-bottom: 2.5%;
+    margin-top: 1%;
+}
+.egesz{
+    border: 2px solid blanchedalmond;
+    border-radius: 10px;
+    width: 70vw;
+    height: 55vh;
+    padding: 10px;
+    box-shadow: 2.5px 2.5px 2.5px 2.5px #bdbdbd;
+}
+#ujKerdes{
+    background-color: darkolivegreen;
+    color:blanchedalmond;
+    border: 2px solid blanchedalmond;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px;
+    text-align: center;
+    font-weight: bolder;
+    font-size: larger;
+    width: 29.75vw;
+    outline: none;
+}
+.ujValasz{
+    background-color: darkolivegreen;
+    color:blanchedalmond;
+    border: 2px solid blanchedalmond;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: large;
+    outline: none;
+}
+#ujKerdes:focus {
+    border-color: rgba(0, 0, 255, 0.527);
+}
+#jo:focus {
+    border-color: rgba(0, 255, 0, 0.527);
+}
+#rossz:focus {
+    border-color: rgba(255, 0, 0, 0.527);
+}
+#supmit {
+    background-color: blanchedalmond;
+    color:darkolivegreen;
+    border: 2px solid darkolivegreen;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px;
+    margin-bottom: 10px;
+    margin-top: 75px;
+    font-weight: bolder;
+    font-size: x-large;
+    width: 10vw;
+    box-shadow: 0 9px #bdbdbd;
+}
+#supmit:hover {
+    background-color: blanchedalmond
+}
+#supmit:active {
+    background-color: blanchedalmond;
+    box-shadow: 0 2.5px #bdbdbd;
+    transform: translateY(5px);
+}
+::selection {
+    background: blanchedalmond;
+    color: darkolivegreen;
+    text-shadow: none;
 }

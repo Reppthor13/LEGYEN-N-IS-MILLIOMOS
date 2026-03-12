@@ -8,7 +8,7 @@ body{
     background-repeat: no-repeat;
     background-attachment: fixed;
     overflow-y: hidden;
-    opacity: 87%;
+    opacity: 90%;
 }
 #kerdesSpace{
     background-color: rgba(90, 65, 155, 0.87);
@@ -50,4 +50,9 @@ body{
 .valaszText:hover{
     background-color:rgba(135, 125, 255, 0.87);
     color:rgb(25, 25, 25);
+}
+::selection{
+    background: blanchedalmond;
+    color: rgba(140, 100, 210, 0.87);
+    text-shadow: none;
 }

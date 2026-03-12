@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Főoldal</title>
+        <title>Bejelentkezés</title>
         <!--!Bootstrap-->
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
         <!--?Popper: dropdowns, popovers, tooltips-->
@@ -15,7 +15,7 @@
         <script src="../javascript/main.js"></script>
     </head>
     <body>
-        <h2>Regisztráció</h2>
+        <center><h2>Regisztráció</h2>
 
         <form id="registerForm">
             <input name="username" placeholder="Username" />
@@ -38,9 +38,9 @@
         <hr />
 
         <button id="logoutBtn" class="gonb">Kijelentkezés</button>
-        <button id="deleteBtn" class="gonb">Profil törlés</button>
+        <button id="deleteBtn" class="gonb">Profil törlése</button></center>
 
-        <hr />
+        <!--<hr />
 
         <h3>Válasz</h3>
         <pre id="result"></pre>
@@ -101,6 +101,6 @@
                 const data = await res.json();
                 show(data);
             });
-        </script>
+        </script> -->
     </body>
 </html>
