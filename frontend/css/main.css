@@ -1,8 +1,21 @@
 body{
     background-color:steelblue;
-    color:darkslateblue;
+    color:blanchedalmond;
+    margin: 5%;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight:bolder;
 }
 .gonb{
-    background-color:rgb(125, 150, 175);
-    color:rgb(230, 215, 205);
+    background-color:lightskyblue;
+    color:black;
+    border-color: black;
+    font-weight: 600;
+    padding: 5px;
+    font-size: large;
+}
+input{
+    background-color: rgb(250, 240, 225);
+    font-weight: 600;
+    padding: 5px;
+    font-size: large;
 }
