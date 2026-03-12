@@ -1,4 +1,4 @@
-const database = require('../sql/database.js');
+const database = require('./sql/database.js');
 
 const rewards = {
     0: 0,
@@ -21,6 +21,7 @@ const rewards = {
 
 function start(request) {
     request.session.game = {
+        aborted: false,
         inprogess: true,
         difficulty: 0,
         reward: 0,
@@ -54,17 +55,46 @@ async function check(request) {
 }
 
 function abort(request) {
-    const reward = rewards[request.session.game.difficulty];
+    request.session.game.aborted = true;
+    request.session.game.inprogess = false;
 }
 
+// prettier-ignore
 function finish(request, response) {
-    const level = request.session.game.difficulty;
+    const game  = request.session.game,
+          level = game.difficulty;
 
-    let reward;
-
-    if (level === 15) {
-        reward = rewards[15];
+    if (game.aborted) {
+        return (game.reward = rewards[level]);
     }
+
+    let reward = 0;
+
+    if (level === 15) reward = rewards[15];
+    else if (level >= 10) reward = rewards[10];
+    else if (level >= 5) reward = rewards[5];
+
+    request.session.game.reward = reward;
 }
 
-module.exports = { start, next, check, finish };
+async function save() {
+    await database.savegame(request);
+
+    const game = request.session.game;
+    const result = {
+        sucess: true,
+        result: {
+            reward: request.session.game.reward
+        }
+    };
+
+    if (game.aborted) {
+        result.message = 'A játék sikeresen megszakítva!';
+        return result;
+    }
+
+    result.message = 'A játék véget ért';
+    return result;
+}
+
+module.exports = { start, next, check, abort, finish, save };

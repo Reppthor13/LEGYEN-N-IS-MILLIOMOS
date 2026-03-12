@@ -4,7 +4,7 @@ const database = require('../sql/database.js');
 const { upload, createResponse, authenticate } = require('../common.js');
 const fs = require('fs/promises');
 const { checkSchema, validationResult } = require('express-validator');
-const { start, check, finish } = request('../game.js');
+const { start, check, finish, save } = require('../game.js');
 
 router.get('/', authenticate, async (request, response) => {
     try {
@@ -13,7 +13,8 @@ router.get('/', authenticate, async (request, response) => {
         }
 
         if (!request.session.game.inprogress) {
-            return finish(request, response);
+            finish(request);
+            return response.status(200).json(await save(request, response));
         }
 
         const result = await next();

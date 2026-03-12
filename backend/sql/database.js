@@ -97,6 +97,8 @@ async function checkanswer(request) {
     return true;
 }
 
+async function savegame() {}
+
 //!Export
 module.exports = {
     selectall,
