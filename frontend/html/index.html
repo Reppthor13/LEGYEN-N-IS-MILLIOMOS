@@ -20,11 +20,10 @@
             <div class="container-fluid text-center">
                 <center>
                     <render-if when="!local.question && !local.ended">
-                        <div>A játék indítása</div>
                         <h3 subscribe-to="message"></h3>
                         <smart-form-wrapper url="/api/game?action=start" method="GET" refresh-target="state-provider">
                             <form>
-                                <button>Indít</button>
+                                <button id="start">Start</button>
                             </form>
                         </smart-form-wrapper>
                     </render-if>
