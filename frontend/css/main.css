@@ -3,7 +3,6 @@ body{
     color:blanchedalmond;
     margin: 5%;
     font-family: 'Courier New', Courier, monospace;
-    font-weight:bolder;
 }
 .gonb{
     background-color:lightskyblue;
@@ -18,4 +17,13 @@ input{
     font-weight: 600;
     padding: 5px;
     font-size: large;
+    text-align: center;
+}
+h2{
+    font-weight: bold;
+    margin-top: 5%;
+    margin-bottom: 2.5%;
+}
+form{
+    margin-bottom: 5%;
 }
