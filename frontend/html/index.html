@@ -19,6 +19,7 @@
         <state-provider src="/api/game" disable-auto-update>
             <state-provider as="user" src="/api/sessions" method="POST"></state-provider>
 
+
             <render-if state="user" when="!local.username">
                 <h1>Be kell jelentkezni!</h1>
                 <a href="/main">Belépés</a>
