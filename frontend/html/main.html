@@ -13,29 +13,31 @@
         <link rel="stylesheet" href="../css/main.css" />
         <!--!JavaScript-->
         <script src="../javascript/main.js"></script>
+        <script type="module" src="/ui/initcomponents.js"></script>
     </head>
     <body>
-        <center><h2>Regisztráció</h2>
+        <center>
 
-        <form id="registerForm">
+        <form id="registerForm" class="forms">
+            <h2>Regisztráció</h2>
             <input name="username" placeholder="Username" />
             <input name="display_name" placeholder="Display name" />
             <input name="password" type="password" placeholder="Password" />
             <input name="passwordConfirm" type="password" placeholder="Password" />
             <button type="submit" class="gonb">Regisztráció</button>
+            <toggle-button target=".forms"><button class="gonb" type="button">Bejelentkezés</button></toggle-button>
+            <hr/>
         </form>
 
-        <hr />
-
-        <h2>Bejelentkezés</h2>
-
-        <form id="loginForm">
+        <form id="loginForm" class="forms" hidden>
+            <h2>Bejelentkezés</h2>
             <input name="username" placeholder="Username" required />
             <input name="password" type="password" placeholder="Password" required />
             <button type="submit" class="gonb">Bejelentkezés</button>
+            <toggle-button target=".forms"><button class="gonb" type="button">Regisztrálás</button></toggle-button>
+            <hr/>
         </form>
 
-        <hr />
 
         <button id="logoutBtn" class="gonb">Kijelentkezés</button>
         <button id="deleteBtn" class="gonb">Profil törlése</button></center>
