@@ -27,3 +27,7 @@ h2{
 form{
     margin-bottom: 5%;
 }
+hr{
+    height:2px;
+    background:lightskyblue;
+}
