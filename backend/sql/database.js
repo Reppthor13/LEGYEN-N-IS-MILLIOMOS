@@ -61,9 +61,9 @@ function logoutuser(request, response) {
 }
 
 async function randomquestion(request) {
-    const difficulty = request.session.difficulty;
+    const difficulty = request.session.game.difficulty;
 
-    const query = 'SELECT * FROM kedesek WHERE nehezseg = ? ORDER BY RAND() LIMIT 1';
+    const query = 'SELECT * FROM kerdesek WHERE nehezseg = ? ORDER BY RAND() LIMIT 1';
     const [rows] = await pool.execute(query, [difficulty]);
 
     if (!rows.length) throw { code: 'NOKERDES' };
@@ -71,11 +71,10 @@ async function randomquestion(request) {
     return rows[0];
 }
 
-async function selectquestion(request) {
-    const kid = request.session.qid;
+async function selectquestion(qid) {
+    const sql = 'SELECT * FROM kerdesek WHERE id = ?';
 
-    const query = 'SELECT * FROM kedesek WHERE nehezseg = ? ORDER BY RAND() LIMIT 1';
-    const [rows] = await pool.execute(query, [kid]);
+    const [rows] = await pool.execute(sql, [qid]);
 
     return rows[0];
 }
@@ -88,7 +87,7 @@ async function selectanswers(kid) {
 
 async function checkanswer(request) {
     const query = 'SELECT id, kid FROM valaszok WHERE id = ? AND kid = ? AND helyes = TRUE';
-    const [rows] = await pool.execute(query, [request.body.qid, request.session.game.kid]);
+    const [rows] = await pool.execute(query, [request.body.aid, request.session.game.qid]);
 
     if (!rows.length) {
         return false;
@@ -109,5 +108,6 @@ module.exports = {
     randomquestion,
     selectquestion,
     selectanswers,
-    checkanswer
+    checkanswer,
+    savegame
 };

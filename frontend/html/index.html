@@ -12,19 +12,75 @@
         <!--!CSS-->
         <link rel="stylesheet" href="../css/index.css" />
         <!--!JavaScript-->
-        <script src="../javascript/index.js"></script>
+        <script type="module" src="../javascript/index.js"></script>
+        <script type="module" src="/ui/initcomponents.js"></script>
     </head>
     <body>
-        <div class="container-fluid text-center">
-            <center><div class="row text-center" id="kerdesSpace">
-                <h2 id="kerdesText">Ez egy kérdés</h2>
+        <state-provider src="/api/game" disable-auto-update>
+            <div class="container-fluid text-center">
+                <center>
+                    <render-if when="!local.question && !local.ended">
+                        <div>A játék indítása</div>
+                        <h3 subscribe-to="message"></h3>
+                        <smart-form-wrapper url="/api/game?action=start" method="GET" refresh-target="state-provider">
+                            <form>
+                                <button>Indít</button>
+                            </form>
+                        </smart-form-wrapper>
+                    </render-if>
+
+                    <render-if when="!local.ended">
+                        <div class="row text-center" id="kerdesSpace">
+                            <h1 stye="color: white" subscribe-to="question.id"></h1>
+                            <h2 subscribe-to="question.kerdes" id="kerdesText">Ez egy kérdés</h2>
+                        </div>
+                        <div class="row text-center" id="valaszSpace">
+                            <collection-view items-source="answers" subscribe>
+                                <template>
+                                    <div class="item">
+                                        <smart-form-wrapper
+                                            url="/api/game"
+                                            method="POST"
+                                            refresh-target="state-provider"
+                                        >
+                                            <form>
+                                                <input
+                                                    name="aid"
+                                                    type="hidden"
+                                                    data-bind="id"
+                                                    bind-target="value"
+                                                />
+                                                <button>
+                                                    <h2 class="valaszText" data-bind="valasz"></h2>
+                                                </button>
+                                            </form>
+                                        </smart-form-wrapper>
+                                    </div>
+                                </template>
+                            </collection-view>
+                        </div>
+                    </render-if>
+
+                    <render-if when="local.ended">
+                        <div>A játék véget ért</div>
+                        <h6>QNyqERQ1ményqetQ:q <span subscribe-to="reward"></span></h6>
+                        <h3 subscribe-to="message"></h3>
+                        <smart-form-wrapper url="/api/game?action=start" method="GET" refresh-target="state-provider">
+                            <form>
+                                <button>Új</button>
+                            </form>
+                        </smart-form-wrapper>
+                    </render-if>
+
+                        <!-- <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
+                    <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
+                    <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
+                    <input type="button" class="valaszText" id="valasz valasz4" value="Ez egy válasz"></input> -->
+                    </div>
+
+                 
+                </center>
             </div>
-            <div class="row text-center" id="valaszSpace">
-                <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
-                <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
-                <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
-                <input type="button" class="valaszText" id="valasz valasz4" value="Ez egy válasz"></input>
-            </div></center>
-        </div>
+        </state-provider>
     </body>
 </html>

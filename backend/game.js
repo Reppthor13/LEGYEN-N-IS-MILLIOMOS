@@ -21,21 +21,34 @@ const rewards = {
 
 function start(request) {
     request.session.game = {
-        aborted: false,
-        inprogess: true,
-        difficulty: 0,
+        inprogress: true,
+        difficulty: 1,
         reward: 0,
-        qid: null
+        qid: null,
+        answered: false,
+        aborted: false
     };
 }
 
 async function next(request) {
+    if (!request.session.game) {
+        throw new Error('A játék nincs elindítva');
+    }
+
+    const game = request.session.game;
     let question;
 
-    if (request.session.qid) {
-        question = await database.selectquestion(request);
-    } else {
+    // REFRESH eset
+    if (game.qid && !game.answered) {
+        question = await database.selectquestion(game.qid);
+    }
+
+    // új kérdés
+    else {
         question = await database.randomquestion(request);
+
+        game.qid = question.id;
+        game.answered = false;
     }
 
     const answers = await database.selectanswers(question.id);
@@ -47,25 +60,50 @@ async function next(request) {
 }
 
 async function check(request) {
+    const game = request.session.game;
+
+    if (!game || !game.inprogress) {
+        throw new Error('A játék nem aktív');
+    }
+
+    game.answered = true;
+
     const correct = await database.checkanswer(request);
 
-    if (!correct || (correct && request.session.game.difficulty === 15)) {
-        request.session.game.inprogess = false;
-    } else request.session.game.difficulty++;
+    if (!correct) {
+        game.inprogress = false;
+        finish(request);
+        return false;
+    }
+
+    if (game.difficulty === 15) {
+        game.inprogress = false;
+        finish(request);
+        return true;
+    }
+
+    game.difficulty++;
+    game.qid = null;
+
+    return true;
 }
 
 function abort(request) {
-    request.session.game.aborted = true;
-    request.session.game.inprogess = false;
+    const game = request.session.game;
+
+    game.aborted = true;
+    game.inprogress = false;
+
+    finish(request);
 }
 
-// prettier-ignore
-function finish(request, response) {
-    const game  = request.session.game,
-          level = game.difficulty;
+function finish(request) {
+    const game = request.session.game;
+    const level = game.difficulty;
 
     if (game.aborted) {
-        return (game.reward = rewards[level]);
+        game.reward = rewards[level];
+        return;
     }
 
     let reward = 0;
@@ -74,27 +112,36 @@ function finish(request, response) {
     else if (level >= 10) reward = rewards[10];
     else if (level >= 5) reward = rewards[5];
 
-    request.session.game.reward = reward;
+    game.reward = reward;
 }
 
-async function save() {
+async function save(request) {
+    const game = request.session.game;
+
     await database.savegame(request);
 
-    const game = request.session.game;
     const result = {
-        sucess: true,
+        success: true,
         result: {
-            reward: request.session.game.reward
+            ended: true,
+            reward: game.reward
         }
     };
 
     if (game.aborted) {
         result.message = 'A játék sikeresen megszakítva!';
-        return result;
+    } else {
+        result.message = 'A játék véget ért';
     }
 
-    result.message = 'A játék véget ért';
     return result;
 }
 
-module.exports = { start, next, check, abort, finish, save };
+module.exports = {
+    start,
+    next,
+    check,
+    abort,
+    finish,
+    save
+};

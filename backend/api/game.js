@@ -4,11 +4,11 @@ const database = require('../sql/database.js');
 const { upload, createResponse, authenticate } = require('../common.js');
 const fs = require('fs/promises');
 const { checkSchema, validationResult } = require('express-validator');
-const { start, check, finish, save } = require('../game.js');
+const { start, next, check, finish, save } = require('../game.js');
 
 router.get('/', authenticate, async (request, response) => {
     try {
-        if (!request.session.game) {
+        if (!request.session.game || request?.query?.action === 'start') {
             start(request);
         }
 
@@ -17,7 +17,7 @@ router.get('/', authenticate, async (request, response) => {
             return response.status(200).json(await save(request, response));
         }
 
-        const result = await next();
+        const result = await next(request);
 
         response
             .status(200)
@@ -29,7 +29,7 @@ router.get('/', authenticate, async (request, response) => {
 });
 
 router.post('/', authenticate, upload.none(), async (request, response) => {
-    if (!request.body.qid) {
+    if (!request.body.aid) {
         return response.status(400).json(createResponse(false, null, 'Hibás kérés'));
     }
 
