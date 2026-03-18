@@ -25,6 +25,10 @@ router.get('/', authenticate, async (request, response) => {
             message = 'elfogyot';
         }
 
+        if (error.code === 'USED') {
+            message = 'mr kértél segítséget';
+        }
+
         response.status(500).json(createResponse(false, null, message));
     }
 });
