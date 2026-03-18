@@ -2,13 +2,13 @@ body {
     color: blanchedalmond;
     font-family: 'Courier New', Courier, monospace;
     background-image: url('../images/image.jpg');
-    min-height: 100vh;
     background-size: cover;
     background-position: right 50% top 0%;
     background-repeat: no-repeat;
     background-attachment: fixed;
     /* overflow-y: hidden; */
     opacity: 90%;
+    margin: 0;
 }
 #kerdesSpace {
     background-color: rgba(90, 65, 155, 0.87);
@@ -46,35 +46,12 @@ body {
     color: rgba(140, 100, 210, 0.87);
     text-shadow: none;
 }
-#start {
-    background-color: rgba(140, 100, 210, 0.87);
-    color: blanchedalmond;
-    border: 2px solid blanchedalmond;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 20px;
-    margin-bottom: 10px;
-    margin-top: 75px;
-    font-weight: bolder;
-    font-size: x-large;
-    width: 10vw;
-    box-shadow: 0 4.2px blanchedalmond;
-}
-#start:hover {
-    background-color: rgba(135, 125, 255, 0.87);
-}
-#start:active {
-    background-color: rgba(140, 100, 210, 0.87);
-    box-shadow: 0 2.5px rgba(135, 125, 255, 0.87);
-    transform: translateY(5px);
-}
 .gomba{
     background-color: rgba(140, 100, 210, 0.87);
     color: blanchedalmond;
     border: 2px solid blanchedalmond;
     border-radius: 10px;
     padding: 10px;
-    margin: 10px;
     margin-bottom: 5px;
     margin-top: 5px;
     font-weight: bolder;
