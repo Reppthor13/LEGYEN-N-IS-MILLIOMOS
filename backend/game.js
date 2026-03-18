@@ -143,6 +143,35 @@ async function save(request) {
     return result;
 }
 
+function help(request, type) {
+    const answers = database._selectanswers(request.session.game.qid);
+
+    let correct;
+
+    for (const answer of answers) {
+        if (answer.helyes === "1") {
+            correct = answer;
+            break;
+        }
+    }
+
+    let result = {
+        id: null,
+        valasz: null
+    }
+
+    if (type === "tflon") {
+        const random = answers[Math.random() * (answers.length - 1)];
+        const possible = [correct, random];
+        const guess = possible[Math.random() * (possible.length - 1)];
+
+        result.id = guess.id;
+        result.valasz = guess.valasz;
+    } else if (type === "kozonsek") {
+        
+    }
+}
+
 module.exports = {
     start,
     next,

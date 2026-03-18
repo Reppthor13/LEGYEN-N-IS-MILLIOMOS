@@ -87,6 +87,12 @@ async function selectanswers(kid) {
     return rows;
 }
 
+async function _selectanswers(kid) {
+    const query = 'SELECT id, valasz, helyes FROM valaszok WHERE kid = ?';
+    const [rows] = await pool.execute(query, [kid]);
+    return rows;
+}
+
 async function checkanswer(request) {
     const query = 'SELECT id, kid FROM valaszok WHERE id = ? AND kid = ? AND helyes = TRUE';
     const [rows] = await pool.execute(query, [request.body.aid, request.session.game.qid]);
@@ -109,6 +115,7 @@ module.exports = {
     loginuser,
     randomquestion,
     selectquestion,
+    _selectanswers,
     selectanswers,
     checkanswer,
     savegame
