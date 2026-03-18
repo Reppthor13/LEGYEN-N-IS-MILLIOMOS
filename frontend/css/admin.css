@@ -50,7 +50,7 @@ h3{
 #jo:focus {
     border-color: rgba(0, 255, 0, 0.527);
 }
-#rossz:focus {
+.rossz:focus {
     border-color: rgba(255, 0, 0, 0.527);
 }
 #supmit {
