@@ -1,12 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("DOM is fully loaded");
     const supmit = document.getElementById('supmit');
     if (supmit) {
         supmit.addEventListener('click', () => {
-            console.log("asd");
-            document.getElementById("jo").value = "";
-            document.getElementById("rossz").value = "";
-            document.getElementById("ujKerdes").value = "";
+            //???????
+            console.log(document.getElementById("ujKerdes"));
+            let ujKerdes = document.getElementById("ujKerdes").value;
+            //???????
+            let joValasz = document.getElementById("jo").value
+            let rosszValasz1 = document.getElementById("rossz1").value
+            let rosszValasz2 = document.getElementById("rossz2").value
+            let rosszValasz3 = document.getElementById("rossz3").value
+            console.log(ujKerdes);
+            console.log(joValasz);
+            console.log(rosszValasz1);
+            console.log(rosszValasz2);
+            console.log(rosszValasz3);
             location.href = location.href;
         });
     }
