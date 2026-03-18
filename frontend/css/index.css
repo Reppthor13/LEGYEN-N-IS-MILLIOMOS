@@ -33,21 +33,11 @@ body {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
 }
-.valaszText {
-    font-weight: 600;
-    font-size: large;
-    padding: 1%;
-    border: 1px solid black;
-    border-top: none;
-    margin-bottom: 0;
-    background: inherit;
-    color: blanchedalmond;
-}
 #valasz4 {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
 }
-.valaszText:hover {
+.valaszText{
     background-color: rgba(135, 125, 255, 0.87);
     color: rgb(25, 25, 25);
 }

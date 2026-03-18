@@ -25,8 +25,8 @@
             </render-if>
 
             <render-if when="local.level">
-                <h2 subscribe-to="level"></h2>
-                <h2>Pémszint: <span subscribe-to="currentReward"></span></h2>
+                <span subscribe-to="level"></span><br>
+                <span>Pémszint: <span subscribe-to="currentReward"></span></span>
             </render-if>
 
             <render-if state="user" when="local.username">
@@ -83,7 +83,6 @@
                         </render-if>
 
                         <render-if when="local.question">
-                            <div>Játék pefejezésebv :DDD</div>
                             <smart-form-wrapper
                                 url="/api/game?action=abort"
                                 method="GET"
@@ -96,8 +95,8 @@
                         </render-if>
 
                         <render-if when="local.ended">
-                            <div>A játék véget ért</div>
-                            <h6>QNyqERQ1ményqetQ:q <span subscribe-to="reward"></span></h6>
+                            <span>A játék véget ért</span><br>
+                            <span>QNyqERQ1ményqetQ:q <span subscribe-to="reward"></span></span>
                             <h3 subscribe-to="message"></h3>
                             <smart-form-wrapper
                                 url="/api/game?action=start"
@@ -105,7 +104,7 @@
                                 refresh-target="#mainstate"
                             >
                                 <form>
-                                    <button>Új</button>
+                                    <button class="gomba">Új</button>
                                 </form>
                             </smart-form-wrapper>
                         </render-if>
