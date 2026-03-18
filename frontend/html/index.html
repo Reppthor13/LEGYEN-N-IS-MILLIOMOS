@@ -154,16 +154,17 @@
 
                             <state-provider src="/api/help?type=505050" disable-auto-update>
                                 <smart-form-wrapper
-                                    refresh-target="closest:state-provider"
+                                    url="/api/help?type=505050"
+                                    method="GET"
+                                    refresh-target="#mainstate"
                                     response-target="toast-manager"
-                                    only-refresh
                                 >
                                     <form>
                                         <button class="gomba">Fiftutifitfi</button>
                                     </form>
                                 </smart-form-wrapper>
 
-                                <render-if when="local.possible">
+                                <!-- <render-if when="local.possible">
                                     <span>maradék válaszog: </span>
                                     <collection-view items-source="possible" subscribe>
                                         <template>
@@ -173,7 +174,7 @@
                                             </div>
                                         </template>
                                     </collection-view>
-                                </render-if>
+                                </render-if> -->
                             </state-provider>
                         </render-if>
 

@@ -29,6 +29,7 @@ function start(request) {
         aborted: false,
         usedHelp: false,
         currentReward: 0,
+        answers: null,
         availableHelps: {
             mopile: 1,
             authience: 1,
@@ -54,7 +55,15 @@ async function next(request) {
         game.answered = false;
     }
 
-    const answers = await database.selectanswers(question.id);
+    let answers;
+
+    console.log('GAME.ANSWERS: ', game.answers);
+
+    if (game.answers) {
+        answers = game.answers;
+    } else {
+        answers = await database.selectanswers(question.id);
+    }
 
     return {
         currentReward: game.currentReward,
@@ -87,6 +96,7 @@ async function check(request) {
         return true;
     }
 
+    game.answers = null;
     game.currentReward = rewards[game.difficulty];
     game.difficulty++;
     game.qid = null;
@@ -151,12 +161,18 @@ async function save(request) {
 }
 
 async function help(request, type) {
+    console.log(type);
+    if (request.session.game.usedHelp) throw { code: 'USED' };
+
     const game = request.session.game;
     const answers = await database._selectanswers(request.session.game.qid);
 
     for (const answer of answers) {
         if (answer.helyes === 1) {
-            correct = answer;
+            correct = {
+                id: answer.id,
+                valasz: answer.valasz
+            };
             break;
         }
     }
@@ -231,7 +247,19 @@ async function help(request, type) {
             j = Math.floor(Math.random() * answers.length);
         }
 
-        const possible = [correct, answers[j]];
+        const possible = [
+            correct,
+            {
+                id: answers[j].id,
+                valasz: answers[j].valasz
+            }
+        ];
+
+        request.session.game.answers = possible;
+        console.log('ÁTÁLLÍTVA ERRE: ', possible);
+        console.log('ÚJ ÉRTÉK: ', request.session.game.answers);
+
+        return;
 
         return {
             possible
