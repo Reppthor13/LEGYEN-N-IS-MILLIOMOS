@@ -3,14 +3,16 @@ document.addEventListener("DOMContentLoaded", function () {
     if (supmit) {
         supmit.addEventListener('click', () => {
             //???????
-            console.log(document.getElementById("ujKerdes"));
-            let ujKerdes = document.getElementById("ujKerdes").value;
+            const input = document.getElementById("ujKerdes");
+            // shows element
+            console.log(input); 
+            console.log(input.value);  // shows value
             //???????
             let joValasz = document.getElementById("jo").value
             let rosszValasz1 = document.getElementById("rossz1").value
             let rosszValasz2 = document.getElementById("rossz2").value
             let rosszValasz3 = document.getElementById("rossz3").value
-            console.log(ujKerdes);
+            
             console.log(joValasz);
             console.log(rosszValasz1);
             console.log(rosszValasz2);
