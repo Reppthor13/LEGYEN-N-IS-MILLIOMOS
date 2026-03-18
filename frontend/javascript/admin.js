@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
             //kell mindketto mert szar a js
             console.log(ujKerdes); 
             console.log(ujKerdes.value);
+            //
             console.log(joValasz);
             console.log(rosszValasz1);
             console.log(rosszValasz2);
