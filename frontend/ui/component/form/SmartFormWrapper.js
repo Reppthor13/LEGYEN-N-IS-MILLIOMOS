@@ -20,7 +20,14 @@ function getTarget(element, value) {
 
 export default class SmartFormWrapper extends HTMLElement {
     static get observedAttributes() {
-        return ['url', 'method', 'refresh-target', 'response-target', 'show-response-message'];
+        return [
+            'url',
+            'method',
+            'refresh-target',
+            'response-target',
+            'show-response-message',
+            'only-refresh'
+        ];
     }
 
     get url() {
@@ -63,6 +70,10 @@ export default class SmartFormWrapper extends HTMLElement {
         this.setAttribute('show-response-message', value);
     }
 
+    get onlyRefresh() {
+        return this.hasAttribute('only-refresh');
+    }
+
     constructor() {
         super();
     }
@@ -74,6 +85,18 @@ export default class SmartFormWrapper extends HTMLElement {
 
         this.querySelector('form').addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            if (this.onlyRefresh) {
+                try {
+                    for (const element of getTarget(this, this.refreshTarget)) {
+                        element.refresh?.();
+                    }
+                } catch (error) {
+                    console.error(error);
+                    console.error('Unable to refresh target.');
+                }
+                return;
+            }
 
             if (!this.method) return;
 

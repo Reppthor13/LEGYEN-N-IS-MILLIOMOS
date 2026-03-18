@@ -26,7 +26,14 @@ function start(request) {
         reward: 0,
         qid: null,
         answered: false,
-        aborted: false
+        aborted: false,
+        usedHelp: false,
+        currentReward: 0,
+        availableHelps: {
+            mopile: 1,
+            authience: 1,
+            fitfycent: 1
+        }
     };
 }
 
@@ -38,13 +45,9 @@ async function next(request) {
     const game = request.session.game;
     let question;
 
-    // REFRESH eset
     if (game.qid && !game.answered) {
         question = await database.selectquestion(game.qid);
-    }
-
-    // új kérdés
-    else {
+    } else {
         question = await database.randomquestion(request);
 
         game.qid = question.id;
@@ -54,8 +57,10 @@ async function next(request) {
     const answers = await database.selectanswers(question.id);
 
     return {
+        currentReward: game.currentReward,
         question,
-        answers
+        answers,
+        level: game.difficulty
     };
 }
 
@@ -82,8 +87,10 @@ async function check(request) {
         return true;
     }
 
+    game.currentReward = rewards[game.difficulty];
     game.difficulty++;
     game.qid = null;
+    game.usedHelp = false;
 
     return true;
 }
@@ -143,32 +150,94 @@ async function save(request) {
     return result;
 }
 
-function help(request, type) {
-    const answers = database._selectanswers(request.session.game.qid);
-
-    let correct;
+async function help(request, type) {
+    const game = request.session.game;
+    const answers = await database._selectanswers(request.session.game.qid);
 
     for (const answer of answers) {
-        if (answer.helyes === "1") {
+        if (answer.helyes === 1) {
             correct = answer;
             break;
         }
     }
 
-    let result = {
-        id: null,
-        valasz: null
-    }
+    const onlystat = request.query.onlystat;
 
-    if (type === "tflon") {
-        const random = answers[Math.random() * (answers.length - 1)];
+    if (type === 'tflon') {
+        if (game.availableHelps.mopile <= 0) {
+            throw { code: 'NOHELPREMAINING' };
+        }
+
+        // if (onlystat) {
+        //     return {
+        //         remaining: request.session.game
+        //     }
+        // }
+
+        game.availableHelps.mopile -= 1;
+
+        const random = answers[Math.floor(Math.random() * answers.length)];
         const possible = [correct, random];
-        const guess = possible[Math.random() * (possible.length - 1)];
+        const guess = possible[Math.floor(Math.random() * possible.length)];
 
-        result.id = guess.id;
-        result.valasz = guess.valasz;
-    } else if (type === "kozonsek") {
-        
+        return {
+            id: guess.id,
+            valasz: guess.valasz
+        };
+    } else if (type === 'kozonsek') {
+        if (game.availableHelps.authience <= 0) {
+            throw { code: 'NOHELPREMAINING' };
+        }
+
+        game.availableHelps.authience -= 1;
+
+        const rands = Array.from({ length: 4 }, () => Math.random());
+
+        let max_i = 0;
+
+        for (let i = 0; i < rands.length; i++) {
+            if (rands[i] > rands[max_i]) {
+                max_i = i;
+            }
+        }
+
+        const all = [];
+
+        for (const index in rands) {
+            all.push({
+                id: answers[index].id,
+                valasz: answers[index].valasz,
+                vote: rands[index]
+            });
+        }
+
+        return {
+            suggested: {
+                id: answers[max_i].id,
+                valasz: answers[max_i].valasz
+            },
+            other: all
+        };
+    } else if (type === '505050') {
+        if (game.availableHelps.fitfycent <= 0) {
+            throw { code: 'NOHELPREMAINING' };
+        }
+
+        game.availableHelps.fitfycent -= 1;
+
+        let j = Math.floor(Math.random() * answers.length);
+
+        while (answers[j].helyes != '0') {
+            j = Math.floor(Math.random() * answers.length);
+        }
+
+        const possible = [correct, answers[j]];
+
+        return {
+            possible
+        };
+    } else {
+        throw {};
     }
 }
 
@@ -178,5 +247,6 @@ module.exports = {
     check,
     abort,
     finish,
-    save
+    save,
+    help
 };

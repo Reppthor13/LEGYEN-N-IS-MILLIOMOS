@@ -16,13 +16,17 @@
         <script type="module" src="/ui/initcomponents.js"></script>
     </head>
     <body>
-        <state-provider src="/api/game" disable-auto-update>
+        <state-provider src="/api/game" id="mainstate" disable-auto-update>
             <state-provider as="user" src="/api/sessions" method="POST"></state-provider>
-
 
             <render-if state="user" when="!local.username">
                 <h1>Be kell jelentkezni!</h1>
                 <a href="/main">Belépés</a>
+            </render-if>
+
+            <render-if when="local.level">
+                <h2 subscribe-to="level"></h2>
+                <h2>Pémszint: <span subscribe-to="currentReward"></span></h2>
             </render-if>
 
             <render-if state="user" when="local.username">
@@ -31,17 +35,23 @@
                         <render-if when="!local.question && !local.ended">
                             <div>A játék indítása</div>
                             <h3 subscribe-to="message"></h3>
-                            <smart-form-wrapper url="/api/game?action=start" method="GET" refresh-target="state-provider">
+                            <smart-form-wrapper
+                                url="/api/game?action=start"
+                                method="GET"
+                                refresh-target="#mainstate"
+                            >
                                 <form>
                                     <button>Indít/folytatása</button>
                                 </form>
                             </smart-form-wrapper>
                         </render-if>
-    
-                        <render-if when="!local.ended">
+
+                        <render-if when="local.question">
                             <div class="row text-center" id="kerdesSpace">
                                 <h1 stye="color: white" subscribe-to="question.id"></h1>
-                                <h2 subscribe-to="question.kerdes" id="kerdesText">Ez egy kérdés</h2>
+                                <h2 subscribe-to="question.kerdes" id="kerdesText">
+                                    Ez egy kérdés
+                                </h2>
                             </div>
                             <div class="row text-center" id="valaszSpace">
                                 <collection-view items-source="answers" subscribe>
@@ -50,7 +60,7 @@
                                             <smart-form-wrapper
                                                 url="/api/game"
                                                 method="POST"
-                                                refresh-target="state-provider"
+                                                refresh-target="#mainstate"
                                             >
                                                 <form>
                                                     <input
@@ -60,7 +70,10 @@
                                                         bind-target="value"
                                                     />
                                                     <button>
-                                                        <h2 class="valaszText" data-bind="valasz"></h2>
+                                                        <h2
+                                                            class="valaszText"
+                                                            data-bind="valasz"
+                                                        ></h2>
                                                     </button>
                                                 </form>
                                             </smart-form-wrapper>
@@ -69,37 +82,111 @@
                                 </collection-view>
                             </div>
                         </render-if>
-    
+
                         <render-if when="local.question">
                             <div>Játék pefejezésebv :DDD</div>
-                            <smart-form-wrapper url="/api/game?action=abort" method="GET" refresh-target="state-provider">
+                            <smart-form-wrapper
+                                url="/api/game?action=abort"
+                                method="GET"
+                                refresh-target="#mainstate"
+                            >
                                 <form>
                                     <button>Meksakít</button>
                                 </form>
                             </smart-form-wrapper>
                         </render-if>
-    
+
                         <render-if when="local.ended">
                             <div>A játék véget ért</div>
                             <h6>QNyqERQ1ményqetQ:q <span subscribe-to="reward"></span></h6>
                             <h3 subscribe-to="message"></h3>
-                            <smart-form-wrapper url="/api/game?action=start" method="GET" refresh-target="state-provider">
+                            <smart-form-wrapper
+                                url="/api/game?action=start"
+                                method="GET"
+                                refresh-target="#mainstate"
+                            >
                                 <form>
                                     <button>Új</button>
                                 </form>
                             </smart-form-wrapper>
                         </render-if>
-    
-                            <!-- <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
+
+                        <render-if when="local.question">
+                            <state-provider src="/api/help?type=tflon" disable-auto-update>
+                                <smart-form-wrapper
+                                    refresh-target="closest:state-provider"
+                                    response-target="toast-manager"
+                                    only-refresh
+                                >
+                                    <form>
+                                        <button>Telfonos segítség</button>
+                                    </form>
+                                </smart-form-wrapper>
+
+                                <render-if when="local.id">
+                                    Eredmény:
+                                    <span subscribe-to="valasz"></span>
+                                </render-if>
+                            </state-provider>
+
+                            <state-provider src="/api/help?type=kozonsek" disable-auto-update>
+                                <smart-form-wrapper
+                                    refresh-target="closest:state-provider"
+                                    response-target="toast-manager"
+                                    only-refresh
+                                >
+                                    <form>
+                                        <button>Közönséges segítség</button>
+                                    </form>
+                                </smart-form-wrapper>
+
+                                <render-if when="local.suggested">
+                                    <span>A közönség meklátása: </span>
+                                    <collection-view items-source="other" subscribe>
+                                        <template>
+                                            <div>
+                                                <span data-bind="valasz"></span>
+                                                <span data-bind="vote"></span>
+                                            </div>
+                                        </template>
+                                    </collection-view>
+                                </render-if>
+                            </state-provider>
+
+                            <state-provider src="/api/help?type=505050" disable-auto-update>
+                                <smart-form-wrapper
+                                    refresh-target="closest:state-provider"
+                                    response-target="toast-manager"
+                                    only-refresh
+                                >
+                                    <form>
+                                        <button>Fiftutifitfi</button>
+                                    </form>
+                                </smart-form-wrapper>
+
+                                <render-if when="local.possible">
+                                    <span>maradék válaszog: </span>
+                                    <collection-view items-source="possible" subscribe>
+                                        <template>
+                                            <div>
+                                                <span data-bind="valasz"></span>
+                                                <span data-bind="vote"></span>
+                                            </div>
+                                        </template>
+                                    </collection-view>
+                                </render-if>
+                            </state-provider>
+                        </render-if>
+
+                        <!-- <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
                         <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
                         <input type="button" class="valaszText" value="Ez egy válasz" id="valasz"></input>
                         <input type="button" class="valaszText" id="valasz valasz4" value="Ez egy válasz"></input> -->
-                        </div>
-    
-                     
                     </center>
                 </div>
             </render-if>
         </state-provider>
+
+        <toast-manager></toast-manager>
     </body>
 </html>
