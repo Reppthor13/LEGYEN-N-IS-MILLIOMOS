@@ -33,7 +33,6 @@
                 <div class="container-fluid text-center">
                     <center>
                         <render-if when="!local.question && !local.ended">
-                            <div>A játék indítása</div>
                             <h3 subscribe-to="message"></h3>
                             <smart-form-wrapper
                                 url="/api/game?action=start"
@@ -41,7 +40,7 @@
                                 refresh-target="#mainstate"
                             >
                                 <form>
-                                    <button>Indít/folytatása</button>
+                                    <button class="gomba">Indít/folytatás</button>
                                 </form>
                             </smart-form-wrapper>
                         </render-if>
@@ -91,7 +90,7 @@
                                 refresh-target="#mainstate"
                             >
                                 <form>
-                                    <button>Meksakít</button>
+                                    <button class="gomba">Meksakít</button>
                                 </form>
                             </smart-form-wrapper>
                         </render-if>
@@ -119,12 +118,12 @@
                                     only-refresh
                                 >
                                     <form>
-                                        <button>Telfonos segítség</button>
+                                        <button class="gomba">Telfonos segítség</button>
                                     </form>
                                 </smart-form-wrapper>
 
                                 <render-if when="local.id">
-                                    Eredmény:
+                                    <span>Eredmény:</span>
                                     <span subscribe-to="valasz"></span>
                                 </render-if>
                             </state-provider>
@@ -136,7 +135,7 @@
                                     only-refresh
                                 >
                                     <form>
-                                        <button>Közönséges segítség</button>
+                                        <button class="gomba">Közönséges segítség</button>
                                     </form>
                                 </smart-form-wrapper>
 
@@ -160,7 +159,7 @@
                                     only-refresh
                                 >
                                     <form>
-                                        <button>Fiftutifitfi</button>
+                                        <button class="gomba">Fiftutifitfi</button>
                                     </form>
                                 </smart-form-wrapper>
 
