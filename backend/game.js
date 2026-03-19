@@ -163,6 +163,8 @@ async function save(request) {
 async function help(request, type) {
     console.log(type);
     if (request.session.game.usedHelp) throw { code: 'USED' };
+    
+        request.session.game.usedHelp = true;
 
     const game = request.session.game;
     const answers = await database._selectanswers(request.session.game.qid);
@@ -258,7 +260,6 @@ async function help(request, type) {
         request.session.game.answers = possible;
         console.log('ÁTÁLLÍTVA ERRE: ', possible);
         console.log('ÚJ ÉRTÉK: ', request.session.game.answers);
-        request.session.game.usedHelp = true;
         return;
 
         return {
@@ -267,6 +268,7 @@ async function help(request, type) {
     } else {
         throw {};
     }
+    
 }
 
 module.exports = {
