@@ -30,7 +30,7 @@
             </render-if>
 
             <render-if state="user" when="local.username">
-                <div class="container-fluid text-center">
+                <div class="container-fluid text-center" id="gama">
                     <center>
                         <render-if when="!local.question && !local.ended">
                             <h3 subscribe-to="message"></h3>
@@ -40,7 +40,7 @@
                                 refresh-target="#mainstate"
                             >
                                 <form>
-                                    <button class="gomba">Indít/folytatás</button>
+                                    <button class="gomba">Indítás/folytatás</button>
                                 </form>
                             </smart-form-wrapper>
                         </render-if>
@@ -89,7 +89,7 @@
                                 refresh-target="#mainstate"
                             >
                                 <form>
-                                    <button class="gomba">Megszakít</button>
+                                    <button class="gomba">Mekszakítás</button>
                                 </form>
                             </smart-form-wrapper>
                         </render-if>
@@ -104,7 +104,7 @@
                                 refresh-target="#mainstate"
                             >
                                 <form>
-                                    <button class="gomba">Új</button>
+                                    <button class="gomba">Új játék</button>
                                 </form>
                             </smart-form-wrapper>
                         </render-if>
@@ -117,7 +117,7 @@
                                     only-refresh
                                 >
                                     <form>
-                                        <button class="gomba"><img src="/images/hTawo.jpg">Telfonos segítség</button>
+                                        <button class="gomba"><img src="/images/hTawo.jpg">Telefonos segítség</button>
                                     </form>
                                 </smart-form-wrapper>
 
