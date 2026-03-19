@@ -1,6 +1,7 @@
+    @import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Double:wght@100..900&display=swap');
 body {
     color: blanchedalmond;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Bitcount Prop Double";
     background-image: url('../images/image.jpg');
     background-size: cover;
     background-position: right 50% top 0%;

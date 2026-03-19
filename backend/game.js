@@ -207,7 +207,7 @@ async function help(request, type) {
 
         game.availableHelps.authience -= 1;
 
-        const rands = Array.from({ length: 4 }, () => Math.random());
+        const rands = Array.from({ length: 4 }, () => Math.random().toFixed(2));
 
         let max_i = 0;
 

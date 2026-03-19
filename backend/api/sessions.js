@@ -19,7 +19,7 @@ router.post(
 
         try {
             await database.loginuser(request);
-            response.status(200).json(createResponse(true, null, 'SICKERES PEJELENTKESZÉS!'));
+            response.status(200).json(createResponse(true, null, 'SIKERES PEJELENTKEZÉS!'));
         } catch (error) {
             console.log(error);
             if (error?.code == 'LEKSZUSZ') {

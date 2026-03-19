@@ -20,13 +20,13 @@
             <state-provider as="user" src="/api/sessions" method="POST"></state-provider>
 
             <render-if state="user" when="!local.username">
-                <h1>Be kell jelentkezni!</h1>
-                <a href="/main">Belépés</a>
+                <center><h1>Be kell jelentkezni!</h1></center>
+                <center><a href="/main">Belépés</a></center>
             </render-if>
 
             <render-if when="local.level">
-                <span subscribe-to="level"></span><br>
-                <span>Pémszint: <span subscribe-to="currentReward"></span></span>
+                <center><span subscribe-to="level"></span><br></center>
+                <center><span>Pénszint: <span subscribe-to="currentReward"></span></span></center>
             </render-if>
 
             <render-if state="user" when="local.username">
@@ -89,14 +89,14 @@
                                 refresh-target="#mainstate"
                             >
                                 <form>
-                                    <button class="gomba">Meksakít</button>
+                                    <button class="gomba">Megszakít</button>
                                 </form>
                             </smart-form-wrapper>
                         </render-if>
 
                         <render-if when="local.ended">
                             <span>A játék véget ért</span><br>
-                            <span>QNyqERQ1ményqetQ:q <span subscribe-to="reward"></span></span>
+                            <span>Nyereményed: <span subscribe-to="reward"></span></span>
                             <h3 subscribe-to="message"></h3>
                             <smart-form-wrapper
                                 url="/api/game?action=start"
@@ -159,7 +159,7 @@
                                     response-target="toast-manager"
                                 >
                                     <form>
-                                        <button class="gomba"><img src="/images/qMoLW.jpg">Fiftutifitfi</button>
+                                        <button class="gomba"><img src="/images/qMoLW.jpg">Fiftyfifty</button>
                                     </form>
                                 </smart-form-wrapper>
                             </state-provider>
