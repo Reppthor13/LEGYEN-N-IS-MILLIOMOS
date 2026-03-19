@@ -14,7 +14,6 @@ router.get('/', authenticate, async (request, response) => {
 
     try {
         const result = await help(request, type);
-        request.session.game.processingHelp = false;
         response.status(200).json(createResponse(true, result, 'Segicsg lkérv'));
     } catch (error) {
         console.log(error);

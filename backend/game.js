@@ -29,7 +29,6 @@ function start(request) {
         aborted: false,
         usedHelp: false,
         currentReward: 0,
-        processingHelp: false,
         answers: null,
         availableHelps: {
             mopile: 1,
@@ -164,12 +163,10 @@ async function save(request) {
 async function help(request, type) {
     console.log(type);
     if (request.session.game.usedHelp) throw { code: 'USED' };
-    if (request.session.game.processingHelp) throw {};
 
     const game = request.session.game;
     
     game.usedHelp = true;
-    game.processingHelp = true;
     const answers = await database._selectanswers(request.session.game.qid);
 
     for (const answer of answers) {
