@@ -114,7 +114,15 @@ export default class SmartFormWrapper extends HTMLElement {
 
             const response = await net.send(this.url, obj);
 
-            console.log(response);
+            this.dispatchEvent(new CustomEvent("response", {
+                detail: {
+                    response
+                },
+                bubbles: true,
+                composed: true
+            }))
+
+            // console.log(response);
 
             if (this.showResponseMessage) {
                 responseMessage.from(response);

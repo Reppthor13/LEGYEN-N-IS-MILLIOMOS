@@ -19,7 +19,7 @@ body {
     width: 50%;
     margin-top: 0;
     z-index: 1000;
-    margin-top: 32%;
+    /* margin-top: 32%; */
     position: relative;
 }
 #kerdesText {
@@ -59,7 +59,13 @@ span{
     font-weight: bolder;
 }
 img{
-    display: none;
+    /* display: none; */
+}
+.segicsek {
+    max-width: min-content;
+}
+.segicsek img {
+    width: 100%;
 }
 #valasz{
     color: blanchedalmond;
@@ -79,6 +85,17 @@ img{
     padding-top: 1%;
 }
 #gama{
-    position: absolute;
-    top: 0;
+    /* position: absolute;
+    top: 0; */
+}.renderif_1 {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.renderif_1 * {
+    align-self: stretch;
+    display: block;
+    height: 100%;
 }

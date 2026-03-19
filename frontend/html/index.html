@@ -25,8 +25,9 @@
             </render-if>
 
             <render-if when="local.level">
-                <center><span subscribe-to="level"></span><br></center>
-                <center><span>Pénszint: <span subscribe-to="currentReward"></span></span></center>
+                <center>
+                    <span>Szint: <span subscribe-to="level"></span> - <span subscribe-to="currentReward"></span> Ft</span><br>
+                </center>
             </render-if>
 
             <render-if state="user" when="local.username">
@@ -47,7 +48,7 @@
 
                         <render-if when="local.question">
                             <div class="row text-center" id="kerdesSpace">
-                                <h1 stye="color: white" subscribe-to="question.id"></h1>
+                                <!-- <h1 stye="color: white" subscribe-to="question.id"></h1> -->
                                 <h2 subscribe-to="question.kerdes" id="kerdesText">
                                     Ez egy kérdés
                                 </h2>
@@ -60,6 +61,7 @@
                                                 url="/api/game"
                                                 method="POST"
                                                 refresh-target="#mainstate"
+                                                id="kerdeses"
                                             >
                                                 <form>
                                                     <input
@@ -109,7 +111,7 @@
                             </smart-form-wrapper>
                         </render-if>
 
-                        <render-if when="local.question">
+                        <render-if when="local.question" class="renderif_1">
                             <state-provider src="/api/help?type=tflon" disable-auto-update>
                                 <smart-form-wrapper
                                     refresh-target="closest:state-provider"
@@ -117,7 +119,7 @@
                                     only-refresh
                                 >
                                     <form>
-                                        <button class="gomba"><img src="/images/hTawo.jpg">Telefonos segítség</button>
+                                        <button onclick="fonungLCick()" class="gomba segicsek"><img src="/images/hTawo.jpg">Telfonos segítség</button>
                                     </form>
                                 </smart-form-wrapper>
 
@@ -134,7 +136,7 @@
                                     only-refresh
                                 >
                                     <form>
-                                        <button class="gomba"><img src="/images/hIOmJ.jpg">Közönséges segítség</button>
+                                        <button  onclick="kozonsekCilck()" class="gomba segicsek"><img src="/images/hIOmJ.jpg">Közönséges segítség</button>
                                     </form>
                                 </smart-form-wrapper>
 
@@ -159,7 +161,7 @@
                                     response-target="toast-manager"
                                 >
                                     <form>
-                                        <button class="gomba"><img src="/images/qMoLW.jpg">Fiftyfifty</button>
+                                        <button onclick="onFiftutifitfiLclik()" class="gomba segicsek"><img src="/images/qMoLW.jpg">Fiftutifitfi</button>
                                     </form>
                                 </smart-form-wrapper>
                             </state-provider>
@@ -170,5 +172,76 @@
         </state-provider>
 
         <toast-manager></toast-manager>
+
+        <audio src="/images/krokett.mp3" id="correctSound"></audio>
+        <audio src="/images/incorrectBuzzer.mp3" id="incorrectSound"></audio>
+        <audio src="/images/5cet.mp3" id="cent"></audio>
+        <audio src="/images/telfon.mp3" id="telefon"></audio>
+        <audio src="/images/crowd.mp3" id="crowsSound"></audio>
+
+        <script>
+            const croect = document.querySelector("#correctSound");
+            const incorectBusser = document.querySelector("#incorrectSound");
+            const cet = document.querySelector("#cent");
+            const telfon = document.querySelector("#telefon")
+            const crowd = document.querySelector("#crowsSound");
+
+            const audioCtx = new AudioContext();
+
+            const fitfiSouce = audioCtx.createMediaElementSource(cet);
+            const gainNode = audioCtx.createGain();
+            gainNode.gain.value = 0.25;
+            fitfiSouce.connect(gainNode).connect(audioCtx.destination);
+
+            const telefonSource = audioCtx.createMediaElementSource(telfon);
+            telefonSource.connect(audioCtx.destination);
+
+            const correctNode = audioCtx.createMediaElementSource(croect);
+            correctNode.connect(audioCtx.destination);
+
+            const buzzerNode = audioCtx.createMediaElementSource(incorectBusser);
+            buzzerNode.connect(audioCtx.destination)
+
+            function onFiftutifitfiLclik() {
+                if (audioCtx.state === "suspended") {
+                    audioCtx.resume();
+                }
+
+                cet.play();
+            }
+
+            function kozonsekCilck() {
+                if (audioCtx.state === "suspended") {
+                    audioCtx.resume();
+                }
+
+                // telfon.play();
+            }
+
+            function fonungLCick() {
+                if (audioCtx.state === "suspended") {
+                    audioCtx.resume();
+                }
+
+                telfon.play();
+            }
+
+            document.addEventListener("response", (e) => {
+                if (audioCtx.state === "suspended") {
+                    audioCtx.resume()
+                }
+
+                const response = e?.detail?.response;
+                if (!response) return;
+
+                if (response?.result?.success) {
+                    croect.play();
+                    console.log("CORRECT PLAYED")
+                } else if (response?.result?.success === false) {
+                    incorectBusser.play();
+                    console.log("INCORRECT BZER")
+                }
+            })
+        </script>
     </body>
 </html>
