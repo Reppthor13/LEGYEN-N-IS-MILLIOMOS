@@ -53,7 +53,7 @@
                                 </h2>
                             </div>
                             <div class="row text-center" id="valaszSpace">
-                                <collection-view items-source="answers" subscribe>
+                                <collection-view items-source="answers" id="kerdojel" subscribe>
                                     <template>
                                         <div class="item">
                                             <smart-form-wrapper
@@ -68,7 +68,7 @@
                                                         data-bind="id"
                                                         bind-target="value"
                                                     />
-                                                    <button>
+                                                    <button id="valasz">
                                                         <h2
                                                             class="valaszText"
                                                             data-bind="valasz"
