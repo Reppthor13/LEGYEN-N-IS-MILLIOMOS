@@ -258,7 +258,7 @@ async function help(request, type) {
         request.session.game.answers = possible;
         console.log('ÁTÁLLÍTVA ERRE: ', possible);
         console.log('ÚJ ÉRTÉK: ', request.session.game.answers);
-
+        request.session.game.usedHelp = true;
         return;
 
         return {
