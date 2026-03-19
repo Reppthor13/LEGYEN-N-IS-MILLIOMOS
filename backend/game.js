@@ -164,7 +164,7 @@ async function save(request) {
 async function help(request, type) {
     console.log(type);
     if (request.session.game.usedHelp) throw { code: 'USED' };
-    if (request.session.game.processingHelp) return;
+    if (request.session.game.processingHelp) throw {};
 
     const game = request.session.game;
     
