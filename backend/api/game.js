@@ -43,7 +43,16 @@ router.post('/', authenticate, upload.none(), async (request, response) => {
 
     try {
         const success = await check(request);
-        response.status(200).json(createResponse(true, {success}, 'Válasz sikeresen feldolgozva'));
+
+        let message;
+
+        if (success) {
+            message = "Helyes válasz"
+        } else {
+            message = "Helytelen válasz"
+        }
+
+        response.status(200).json(createResponse(true, {success}, message));
     } catch (error) {
         console.log(error);
         response.status(500).json(createResponse(false, null, 'Hiba történt a játék során'));

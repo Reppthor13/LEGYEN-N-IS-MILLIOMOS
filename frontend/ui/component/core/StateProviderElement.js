@@ -4,7 +4,7 @@ import State from '/state/State.js';
 export default class StateProviderElement extends HTMLElement {
     // with as you can name the remote state so inside a multistateprovider the elements can reference it
     static get observedAttributes() {
-        return ['src', 'as', 'method', 'src-prefix', 'inherit', 'disable-auto-update'];
+        return ['src', 'as', 'method', 'src-prefix', 'inherit', 'disable-auto-update', "response-target"];
     }
 
     get src() {
@@ -51,6 +51,14 @@ export default class StateProviderElement extends HTMLElement {
 
     get disableAutoUpdate() {
         return this.hasAttribute('disable-auto-update');
+    }
+
+    get responseTarget() {
+        return this.getAttribute("response-target");
+    }
+
+    set responseTarget(value) {
+        this.setAttribute("response-target", value);
     }
 
     constructor() {
@@ -253,13 +261,21 @@ export default class StateProviderElement extends HTMLElement {
                 method: this.method || 'GET'
             });
 
-            console.log(response);
+            // console.log(response);
 
             // if (response?.success) {
             //     this.states.get('local').from(response.result);
             // }
 
             this.states.get('local').from(response.result);
+
+            if (this.responseTarget) {
+                try {
+                    document.querySelector(this.responseTarget).onResponse(response);
+                } catch (error) {
+                    console.error('Unable to send response to target.');
+                }
+            }
         } catch (_) {
             return;
         }

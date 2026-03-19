@@ -31,6 +31,6 @@ function authenticate2(request, response, next) {
     else
         response
             .status(403)
-            .json(createResponse(true, request.session.user, 'MÁR RÉG BE VAGY JELETKEZVE!'));
+            .json(createResponse(true, request.session.user, 'Már be vagy jelentkezve!'));
 }
 module.exports = { upload, createResponse, authenticate, authenticate2 };

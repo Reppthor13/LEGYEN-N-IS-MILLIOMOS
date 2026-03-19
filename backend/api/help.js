@@ -14,18 +14,18 @@ router.get('/', authenticate, async (request, response) => {
 
     try {
         const result = await help(request, type);
-        response.status(200).json(createResponse(true, result, 'Segicsg lkérv'));
+        response.status(200).json(createResponse(true, result, 'Segítség sikeresen lekérve'));
     } catch (error) {
         console.log(error);
 
-        let message = 'Lehervadt a végpont';
+        let message = 'Valami hiba történt a segítség kérése közben';
 
         if (error.code === 'NOHELPREMAINING') {
-            message = 'elfogyot';
+            message = 'Elfogyott a segítség';
         }
 
         if (error.code === 'USED') {
-            message = 'mr kértél segítséget';
+            message = 'Ebben a körben már kértél segítséget';
         }
 
         response.status(500).json(createResponse(false, null, message));

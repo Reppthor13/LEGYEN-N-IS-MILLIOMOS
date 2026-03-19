@@ -1,6 +1,6 @@
 toast-manager {
   position: fixed;
-  z-index: 998;
+  z-index: 10000;
   bottom: 0;
   right: 0;
   padding: 10px;
@@ -11,6 +11,7 @@ toast-manager {
 }
 
 .toast {
+  display: block !important;
   min-width: 300px;
   padding: 10px;
   background: #555;

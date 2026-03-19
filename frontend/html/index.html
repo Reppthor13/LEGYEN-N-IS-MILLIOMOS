@@ -6,6 +6,7 @@
         <title>Főoldal</title>
         <!--!Bootstrap-->
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/ui/style/toasts.css">
         <!--?Popper: dropdowns, popovers, tooltips-->
         <script src="../bootstrap/js/popper.min.js"></script>
         <script src="../bootstrap/js/bootstrap.min.js"></script>
@@ -22,6 +23,10 @@
             <render-if state="user" when="!local.username">
                 <center><h1>Be kell jelentkezni!</h1></center>
                 <center><a href="/main">Belépés</a></center>
+            </render-if>
+
+            <render-if state="user" when="local.username">
+                <button id="logoutBtn" class="gonb">Kijelentkezés</button>
             </render-if>
 
             <render-if when="local.level">
@@ -61,6 +66,7 @@
                                                 url="/api/game"
                                                 method="POST"
                                                 refresh-target="#mainstate"
+                                                response-target="toast-manager"
                                                 id="kerdeses"
                                             >
                                                 <form>
@@ -112,10 +118,9 @@
                         </render-if>
 
                         <render-if when="local.question" class="renderif_1">
-                            <state-provider src="/api/help?type=tflon" disable-auto-update>
+                            <state-provider src="/api/help?type=tflon" disable-auto-update response-target="toast-manager">
                                 <smart-form-wrapper
                                     refresh-target="closest:state-provider"
-                                    response-target="toast-manager"
                                     only-refresh
                                 >
                                     <form>
@@ -129,10 +134,9 @@
                                 </render-if>
                             </state-provider>
 
-                            <state-provider src="/api/help?type=kozonsek" disable-auto-update>
+                            <state-provider src="/api/help?type=kozonsek" disable-auto-update response-target="toast-manager">
                                 <smart-form-wrapper
                                     refresh-target="closest:state-provider"
-                                    response-target="toast-manager"
                                     only-refresh
                                 >
                                     <form>
@@ -178,6 +182,23 @@
         <audio src="/images/5cet.mp3" id="cent"></audio>
         <audio src="/images/telfon.mp3" id="telefon"></audio>
         <audio src="/images/crowd.mp3" id="crowsSound"></audio>
+
+        <script>
+            document.getElementById('logoutBtn').addEventListener('click', async () => {
+                const res = await fetch('/api/sessions', {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                const data = await res.json();
+
+                if (data?.success) {
+                    window.location.href = "/main";
+                }
+
+                document.querySelector("toast-manager")?.schedule(data.message, 0);
+            });
+        </script>
 
         <script>
             const croect = document.querySelector("#correctSound");

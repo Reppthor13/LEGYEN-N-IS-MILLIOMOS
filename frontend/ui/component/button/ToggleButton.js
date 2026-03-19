@@ -19,7 +19,6 @@ export default class ToggleButton extends HTMLElement {
 
   connectedCallback() {
     if (this._initialized) return;
-    console.log("jo")
     this.build();
 
     this._initialized = true;
@@ -42,6 +41,10 @@ export default class ToggleButton extends HTMLElement {
         target.hidden = !target.hidden;
       }
     });
+  }
+
+  toggle() {
+    this.querySelector("button").click()
   }
 }
 

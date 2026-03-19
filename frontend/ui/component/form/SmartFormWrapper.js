@@ -129,6 +129,7 @@ export default class SmartFormWrapper extends HTMLElement {
             }
 
             try {
+                console.log(this.responseTarget)
                 document.querySelector(this.responseTarget).onResponse(response);
             } catch (error) {
                 console.error('Unable to send response to target.');
