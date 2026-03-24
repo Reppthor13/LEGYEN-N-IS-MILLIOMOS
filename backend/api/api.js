@@ -31,7 +31,7 @@ router.get('/testsql', async (request, response) => {
 });
 
 //admin kerdes
-app.post("/mentes", (req, res) => {
+router.post("/mentes", (req, res) => {
     const { kerdes, jo, rossz1, rossz2, rossz3, nehezseg } = req.body;
 
     const sqlKerdes = `
