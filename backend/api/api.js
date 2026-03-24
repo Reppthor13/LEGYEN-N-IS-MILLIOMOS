@@ -30,6 +30,45 @@ router.get('/testsql', async (request, response) => {
     }
 });
 
+//admin kerdes
+app.post("/mentes", (req, res) => {
+    const { kerdes, jo, rossz1, rossz2, rossz3, nehezseg } = req.body;
+
+    const sqlKerdes = `
+        INSERT INTO kerdesek (kerdes, nehezseg)
+        VALUES (?, ?)
+    `;
+
+    db.query(sqlKerdes, [kerdes, nehezseg], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.json({ success: false });
+        }
+
+        const kerdesId = result.insertId;
+
+        const valaszok = [
+            [jo, kerdesId, 1],
+            [rossz1, kerdesId, 0],
+            [rossz2, kerdesId, 0],
+            [rossz3, kerdesId, 0]
+        ];
+
+        db.query(
+            "INSERT INTO valaszok (valasz, kid, helyes) VALUES ?",
+            [valaszok],
+            (err2) => {
+                if (err2) {
+                    console.error(err2);
+                    return res.json({ success: false });
+                }
+
+                res.json({ success: true });
+            }
+        );
+    });
+});
+
 router.use('/users', users);
 router.use('/sessions', sessions);
 router.use('/game', game);
