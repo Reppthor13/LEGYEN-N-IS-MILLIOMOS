@@ -69,7 +69,8 @@ async function next(request) {
         currentReward: game.currentReward,
         question,
         answers,
-        level: game.difficulty
+        level: game.difficulty,
+        availableHelps: game.availableHelps
     };
 }
 
@@ -165,7 +166,7 @@ async function help(request, type) {
     if (request.session.game.usedHelp) throw { code: 'USED' };
 
     const game = request.session.game;
-    
+
     game.usedHelp = true;
     const answers = await database._selectanswers(request.session.game.qid);
 
@@ -268,7 +269,6 @@ async function help(request, type) {
     } else {
         throw {};
     }
-    
 }
 
 module.exports = {
