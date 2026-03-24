@@ -36,6 +36,10 @@ router.get('/admin', (request, response) => {
     response.sendFile(path.join(__dirname, '../frontend/html/admin.html'));
 });
 
+router.get('/game', (request, response) => {
+    response.sendFile(path.join(__dirname, '../frontend/html/game.html'));
+});
+
 //!API endpoints
 app.use('/', router);
 const endpoints = require('./api/api.js');
