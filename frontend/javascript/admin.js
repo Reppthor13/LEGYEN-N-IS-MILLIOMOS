@@ -26,9 +26,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     nehezseg: nehezseg
                 })
                 })
-                .then(res => res.json())
+                .then(res => res.text())
                 .then(data => {
-                    console.log("Siker:", data);
+                    console.log("VALASZ:", data);
                 })
                 .catch(err => {
                     console.error("Hiba:", err);

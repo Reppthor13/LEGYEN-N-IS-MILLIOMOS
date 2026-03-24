@@ -7,6 +7,8 @@ const game = require('./game.js');
 const help = require('./help.js');
 const fs = require('fs/promises');
 
+router.use(express.json());
+
 //!Endpoints:
 //?GET /api/test
 router.get('/test', (request, response) => {
