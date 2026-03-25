@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="hu">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Legyen ön is milliomos!</title>
+        <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+        <!--?Popper: dropdowns, popovers, tooltips-->
+        <script src="../bootstrap/js/popper.min.js"></script>
+        <script src="../bootstrap/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="../css/index.css" />
+    </head>
+    <body>
+        <div id="account" hidden>
+            <span>Bejelentkezve mint: <span id="username"></span></span>
+            <button id="logoutBtn" class="gonb">Kijelentkezés</button>
+            <button id="deleteBtn" class="gonb">Profil törlése</button>
+        </div>
+
+        <hr />
+
+        <center><game-container></game-container></center>
+
+        <toast-manager></toast-manager>
+
+        <script>
+            document.getElementById('logoutBtn').addEventListener('click', async () => {
+                const res = await fetch('/api/sessions', {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                const data = await res.json();
+
+                if (data?.success) {
+                    window.location.href = '/main';
+                }
+
+                document.querySelector('toast-manager')?.schedule(data.message, 0);
+            });
+
+            document.getElementById('deleteBtn').addEventListener('click', async () => {
+                const res = await fetch('/api/users', {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                const data = await res.json();
+
+                if (data?.success) {
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 3000);
+                }
+
+                document.querySelector('toast-manager')?.schedule(data.message, 0);
+            });
+        </script>
+
+        <script type="module">
+            import '/javascript/GameContainer.js';
+            import { isLoggedIn } from '/javascript/common.js';
+
+            try {
+                const response = await fetch('/api/sessions', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                if (data?.success) {
+                    if (!window.Game) window.Game = {};
+                    window.Game.user = data.result;
+                }
+            } catch {
+                console.error('An error occured during auto-login.');
+            }
+
+            if (!isLoggedIn()) {
+                window.location.href = '/auth';
+            } else {
+                document.querySelector('#account').hidden = false;
+                document.querySelector('#username').textContent = window.Game.user.username;
+            }
+        </script>
+    </body>
+</html>

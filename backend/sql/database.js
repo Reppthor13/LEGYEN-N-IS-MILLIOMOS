@@ -58,7 +58,7 @@ function logoutuser(request, response) {
         }
 
         response.clearCookie('connect.sid');
-        response.status(200).json(createResponse(true, null, 'Sikertes kijelentkzés!'));
+        response.status(200).json(createResponse(true, null, 'Sikeres kijelentkzés!'));
     });
 }
 

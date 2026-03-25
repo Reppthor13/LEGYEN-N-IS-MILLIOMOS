@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hu">
     <head>
         <meta charset="UTF-8" />
@@ -6,7 +6,7 @@
         <title>Bejelentkezés</title>
         <!--!Bootstrap-->
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="/ui/style/toasts.css">
+        <link rel="stylesheet" href="/ui/style/toasts.css" />
         <!--?Popper: dropdowns, popovers, tooltips-->
         <script src="../bootstrap/js/popper.min.js"></script>
         <script src="../bootstrap/js/bootstrap.min.js"></script>
@@ -27,7 +27,9 @@
                 <input name="passwordConfirm" type="password" placeholder="Password" />
                 <button type="submit" class="gonb">Regisztráció</button>
                 <toggle-button target=".forms"
-                    ><button style="border: none; background: none;" type="button">Már van fiókod? Jelentkezz be</button></toggle-button
+                    ><button style="border: none; background: none" type="button">
+                        Már van fiókod? Jelentkezz be
+                    </button></toggle-button
                 >
                 <hr />
             </form>
@@ -38,12 +40,12 @@
                 <input name="password" type="password" placeholder="Password" required />
                 <button type="submit" class="gonb">Bejelentkezés</button>
                 <toggle-button target=".forms"
-                    ><button style="border: none; background: none;" type="button">Még nincs fiókod? regisztrálj</button></toggle-button
+                    ><button style="border: none; background: none" type="button">
+                        Még nincs fiókod? regisztrálj
+                    </button></toggle-button
                 >
                 <hr />
             </form>
-
-            <button id="deleteBtn" class="gonb">Profil törlése</button>
         </center>
 
         <toast-manager></toast-manager>
@@ -69,10 +71,10 @@
                 const data = await res.json();
 
                 if (data?.success) {
-                    document.querySelector("toggle-button").toggle();
+                    document.querySelector('toggle-button').toggle();
                 }
 
-                document.querySelector("toast-manager")?.schedule(data.message, 0);
+                document.querySelector('toast-manager')?.schedule(data.message, 0);
             });
 
             document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -89,37 +91,48 @@
                 const data = await res.json();
 
                 if (data?.success) {
-                    window.location.href = "/";
+                    if (!window.Game) window.Game = {};
+                    window.Game.user = data.result;
+                    window.location.href = '/';
                 }
 
-                document.querySelector("toast-manager")?.schedule(data.message, 0);
+                document.querySelector('toast-manager')?.schedule(data.message, 0);
             });
 
-            document.getElementById('logoutBtn').addEventListener('click', async () => {
-                const res = await fetch('/api/sessions', {
-                    method: 'DELETE',
+            // document.getElementById('logoutBtn').addEventListener('click', async () => {
+            //     const res = await fetch('/api/sessions', {
+            //         method: 'DELETE',
+            //         credentials: 'include'
+            //     });
+
+            //     const data = await res.json();
+
+            //     document.querySelector('toast-manager')?.schedule(data.message, 0);
+            // });
+        </script>
+
+        <script type="module">
+            import {isLoggedIn} from "/javascript/common.js";
+
+            try {
+                const response = await fetch('/api/sessions', {
+                    method: 'POST',
                     credentials: 'include'
                 });
 
-                const data = await res.json();
-
-                document.querySelector("toast-manager")?.schedule(data.message, 0);
-            });
-
-            document.getElementById('deleteBtn').addEventListener('click', async () => {
-                const res = await fetch('/api/users', {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
-
-                const data = await res.json();
+                const data = await response.json();
 
                 if (data?.success) {
-                    window.location.href = "/main";
+                    if (!window.Game) window.Game = {};
+                    window.Game.user = data.result;
                 }
+            } catch {
+                console.error('An error occured during auto-login.');
+            }
 
-                document.querySelector("toast-manager")?.schedule(data.message, 0);
-            });
+            if (isLoggedIn()) {
+                window.location.href = "/"
+            }
         </script>
     </body>
 </html>

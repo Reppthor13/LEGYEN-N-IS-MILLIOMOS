@@ -25,7 +25,11 @@ app.use(
 //!Routing
 //?Főoldal:
 router.get('/', (request, response) => {
-    response.sendFile(path.join(__dirname, '../frontend/html/index.html'));
+    response.sendFile(path.join(__dirname, '../frontend/html/game.html'));
+});
+
+router.get('/auth', (request, response) => {
+    response.sendFile(path.join(__dirname, '../frontend/html/main.html'));
 });
 
 router.get('/main', (request, response) => {
@@ -34,6 +38,10 @@ router.get('/main', (request, response) => {
 
 router.get('/admin', (request, response) => {
     response.sendFile(path.join(__dirname, '../frontend/html/admin.html'));
+});
+
+router.get('/index', (request, response) => {
+    response.sendFile(path.join(__dirname, '../frontend/html/index.html'));
 });
 
 //!API endpoints

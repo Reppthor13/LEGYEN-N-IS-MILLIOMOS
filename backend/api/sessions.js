@@ -18,23 +18,23 @@ router.post(
             return response.status(400).json(createResponse(false, null, errors.array()[0].msg));
 
         try {
-            await database.loginuser(request);
-            response.status(200).json(createResponse(true, null, 'SIKERES PEJELENTKEZÉS!'));
+            const result = await database.loginuser(request);
+            response.status(200).json(createResponse(true, result, 'Sikeres bejelentkezés'));
         } catch (error) {
             console.log(error);
             if (error?.code == 'LEKSZUSZ') {
                 return response
                     .status(400)
-                    .json(createResponse(false, null, 'FELHASZNÁLÓ NEM LÉTEZIK'));
+                    .json(createResponse(false, null, 'A felhasználó nem létezik'));
             }
             if (error?.code == 'LAMPARKINI') {
                 return response
                     .status(400)
-                    .json(createResponse(false, null, 'HIPÁS FELHASZNÁLÓNÉV JELSZÓ'));
+                    .json(createResponse(false, null, 'Hibás adatok'));
             }
             response
                 .status(500)
-                .json(createResponse(false, null, 'Hiba történt a bejelentkezés közben!'));
+                .json(createResponse(false, null, 'Hiba történt a bejelentkezés közben'));
         }
     }
 );
