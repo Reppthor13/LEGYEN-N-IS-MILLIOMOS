@@ -1,7 +1,6 @@
 import * as net from './network.js';
 
 const rewards = {
-    0: 0,
     1: 10000,
     2: 20000,
     3: 50000,
@@ -31,56 +30,200 @@ export default class GameContainer extends HTMLElement {
         this._helpRequested = false;
         this.sendAnswer = this.sendAnswer.bind(this);
         this.onHelpRequest = this.onHelpRequest.bind(this);
+        this.onAbortRequest = this.onAbortRequest.bind(this);
+        this.startGame = this.startGame.bind(this);
+        this.startNewGame = this.startNewGame.bind(this);
+    }
+
+    toggleUsedHelpButtons() {
+        const available = this?._currentData?.availableHelps;
+
+        if (!available) {
+            return;
+        }
+
+        for (const key of Object.keys(available)) {
+            // if (available[key] > 0) {
+            //     const button = this.querySelector(`#${key}`);
+
+            //     if (!button) continue;
+
+            //     button.disabled = false;
+
+            //     continue;
+            // }
+
+            if (available[key] < 1) {
+                const button = this.querySelector(`#${key}`);
+
+                if (button) {
+                    button.disabled = true;
+                }
+            }
+        }
+    }
+
+    toggleAllHelpButtons(disabled) {
+        const buttons = Array.from(this.querySelectorAll('.help-button'));
+
+        for (const button of buttons) {
+            button.disabled = disabled;
+        }
     }
 
     async onHelpRequest(e) {
+        if (this._helpRequested) {
+            return;
+        }
+
+        this.toggleAllHelpButtons(true);
+
         const helpType = e.detail.type;
 
         if (!helpType) return;
 
         const response = await net.send('/api/help?type=' + helpType);
 
-        console.log(response);
+        console.log(helpType, response);
+
+        const { success, result } = response;
+
+        if (!success) {
+            this._helpRequested = false;
+
+            this.toggleAllHelpButtons(false);
+
+            return;
+        }
+
+        switch (helpType) {
+            case 'mobile':
+                this.showPhoneHelp(result);
+                break;
+            case 'crowd':
+                this.showCrowdHelp(result);
+                break;
+            case 'halve':
+                this.showHalveHelp(result);
+                break;
+            default:
+                console.warn('Invalid help type.');
+                break;
+        }
     }
 
-    connectedCallback() {
+    showPhoneHelp(result) {
+        this._elements.help.textContent = 'A telefonba ezt mondták: ' + result.valasz;
+    }
+
+    showCrowdHelp(result) {
+        if (!result.other) return;
+
+        for (const item of result.other) {
+            const button = this.querySelector(`#_${item.id}`);
+
+            if (!button) continue;
+
+            const h2 = button.querySelector('h2');
+
+            if (!h2) continue;
+
+            h2.textContent += ` ${parseInt(Number(item.vote) * 100)} szavazat`;
+        }
+    }
+
+    showHalveHelp(_) {
+        this.next();
+    }
+
+    async onAbortRequest(e) {
+        this.toggleAnswerButtons(true);
+
+        const response = await net.send('/api/game?action=abort');
+
+        const { success, result } = response;
+
+        if (!success || !result) {
+            this.toggleAnswerButtons(false);
+            return;
+        }
+
+        if (success) {
+            this._currentData = result;
+            this.endGame();
+        }
+    }
+
+    async connectedCallback() {
         if (this._built) return;
-        this.build();
+        await this.build();
     }
 
-    build() {
+    async build() {
         this.innerHTML = `
-            <div>Legyen ön is milliomos</div>
+            <center><h1>Legyen ön is milliomos</h1></center>
+
+            <button id="startGameButton" class="gomba">Játék indítása</button>
+            <button id="startNewGameButton" class="gomba" hidden>Új játék</button>
+
+            <div id="endScreen"></div>
 
             <div class="game-content">
                 <div id="rewards"></div>
 
-                <div>
+                <div id="main-container">
                     <div class="main">
-                        <div id="kerdesText"></div>
-                        <div id="valaszSpace"></div>
+                        <div id="kerdesSpace">
+                            <h2 id="kerdesText"></h2>
+                        </div>
+                        <div class="row text-center" id="valaszSpace"></div>
                     </div>
 
                     <div id="toolbar"></div>
                 </div>
+
+                <div id="help"></div>
             </div>
         `;
 
         const e = this._elements;
 
+        e.endScreen = this.querySelector('#endScreen');
         e.questionText = this.querySelector('#kerdesText');
         e.answersContainer = this.querySelector('#valaszSpace');
         e.toolbar = this.querySelector('#toolbar');
+        e.startGameButton = this.querySelector('#startGameButton');
+        e.startNewGameButton = this.querySelector('#startNewGameButton');
+        e.help = this.querySelector('#help');
+
+        e.startGameButton.addEventListener('click', this.startGame);
+        e.startNewGameButton.addEventListener('click', this.startNewGame);
 
         e.rewardsSidebar = this.querySelector('#rewards');
-        this.renderRewards();
-
-        this.fillToolbar();
 
         this.addEventListener('answer-send', this.sendAnswer);
         this.addEventListener('help-request', this.onHelpRequest);
+        this.addEventListener('abort-request', this.onAbortRequest);
+
+        await this.init();
 
         this._built = true;
+    }
+
+    async init() {
+        const response = await net.send('/api/game/hasongoinggame');
+
+        const { success, result } = response;
+
+        if (!success || !result) {
+            return;
+        }
+
+        if (result.inprogress) {
+            this._elements.startGameButton.textContent = 'Játék folytatása';
+        } else if (!result.inprogress) {
+            this._elements.startGameButton.textContent = 'Játék indítása';
+        }
     }
 
     createRewardEntry(text) {
@@ -111,14 +254,10 @@ export default class GameContainer extends HTMLElement {
     createHelpButton(text, helpType) {
         const button = document.createElement('button');
         button.textContent = text;
+        button.classList.add('help-button');
+        button.id = helpType;
 
         button.addEventListener('click', () => {
-            if (this._helpRequested) {
-                return;
-            }
-
-            this._helpRequested = true;
-
             button.dispatchEvent(
                 new CustomEvent('help-request', {
                     detail: {
@@ -134,8 +273,6 @@ export default class GameContainer extends HTMLElement {
     }
 
     fillToolbar() {
-        if (!this._built) return;
-
         const toolbar = this._elements.toolbar;
 
         if (!toolbar) return;
@@ -146,15 +283,20 @@ export default class GameContainer extends HTMLElement {
         abortButton.textContent = 'Játék megszakítása';
 
         abortButton.addEventListener('click', () => {
-            abortButton.dispatchEvent(new CustomEvent('abort-request'));
+            abortButton.dispatchEvent(
+                new CustomEvent('abort-request', {
+                    bubbles: true,
+                    composed: true
+                })
+            );
         });
 
         toolbar.appendChild(abortButton);
 
         for (const { text, helpType } of [
-            { text: 'Telefon', helpType: 'tflon' },
-            { text: 'Közönség', helpType: 'kozonsek' },
-            { text: 'Felezés', helpType: 505050 }
+            { text: 'Telefon', helpType: 'mobile' },
+            { text: 'Közönség', helpType: 'crowd' },
+            { text: 'Felezés', helpType: 'halve' }
         ]) {
             toolbar.appendChild(this.createHelpButton(text, helpType));
         }
@@ -176,13 +318,41 @@ export default class GameContainer extends HTMLElement {
     }
 
     hasEnded() {
-        return Boolean(this._currentData?.result?.ended);
+        return Boolean(this._currentData?.ended);
     }
 
-    endGame() {}
+    startNewGame() {
+        this._elements.startNewGameButton.hidden = true;
+        this.renderRewards();
+        this.fillToolbar();
+        this.next('/api/game?action=start');
+    }
 
-    async next() {
-        const response = await net.send('/api/game');
+    startGame() {
+        this._elements.startGameButton.hidden = true;
+        this.renderRewards();
+        this.fillToolbar();
+        this.next('/api/game?action=start');
+    }
+
+    endGame() {
+        this._elements.startGameButton.hidden = true;
+        this._elements.startNewGameButton.hidden = false;
+        this._elements.questionText.textContent = '';
+        this._elements.answersContainer.textContent = '';
+        this._elements.rewardsSidebar.textContent = '';
+        this._elements.toolbar.textContent = '';
+        this._elements.endScreen.textContent =
+            'Nyeremény: ' + this._currentData?.reward + ' forint';
+    }
+
+    displayWin() {}
+
+    async next(url = '/api/game') {
+        this._elements.endScreen.textContent = '';
+        this._elements.help.textContent = '';
+
+        const response = await net.send(url);
 
         const { success, result } = response;
 
@@ -197,7 +367,15 @@ export default class GameContainer extends HTMLElement {
             return this.endGame();
         }
 
-        this._helpRequested = false;
+        this._helpRequested = this._currentData.usedHelp;
+
+        if (!this._helpRequested) {
+            this.toggleAllHelpButtons(false);
+        } else {
+            this.toggleAllHelpButtons(true);
+        }
+
+        this.toggleUsedHelpButtons();
 
         this.update();
     }
@@ -209,21 +387,28 @@ export default class GameContainer extends HTMLElement {
     update() {
         if (!this._built) return;
 
-        this._elements.questionText.textContent = this._currentData.question;
+        console.log(this._currentData.question);
+        this._elements.questionText.textContent = this._currentData.question.kerdes;
         this.listAnswers();
         this.highlightCurrentReward();
     }
 
     createAnswerButton(text, aid) {
         const button = document.createElement('button');
+        const h2 = document.createElement('h2');
 
-        button.textContent = text;
+        button.id = '_' + aid;
+        h2.textContent = text;
+        button.classList.add('valasz');
+        h2.classList.add('valaszText');
+        button.appendChild(h2);
 
         button.addEventListener('click', () => {
             button.dispatchEvent(
                 new CustomEvent('answer-send', {
                     detail: {
-                        aid
+                        aid,
+                        button
                     },
                     bubbles: true,
                     composed: true
@@ -249,8 +434,8 @@ export default class GameContainer extends HTMLElement {
             return;
         }
 
-        for (const { valasz, aid } of answers) {
-            answersContainer.appendChild(this.createAnswerButton(valasz, aid));
+        for (const { valasz, id } of answers) {
+            answersContainer.appendChild(this.createAnswerButton(valasz, id));
         }
     }
 
@@ -294,10 +479,14 @@ export default class GameContainer extends HTMLElement {
             return;
         }
 
+        const button = e.detail?.button;
+
+        if (!button) {
+            return;
+        }
+
         this._pending = true;
         this.toggleAnswerButtons(true);
-
-        const button = e.currentTarget;
 
         try {
             const formData = new FormData();

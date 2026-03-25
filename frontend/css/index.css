@@ -1,7 +1,7 @@
-    @import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Double:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Double:wght@100..900&display=swap');
 body {
     color: blanchedalmond;
-    font-family: "Bitcount Prop Double";
+    font-family: 'Bitcount Prop Double';
     background-image: url('../images/image.jpg');
     background-size: cover;
     background-position: right 50% top 0%;
@@ -11,12 +11,12 @@ body {
     margin: 0;
 }
 #kerdesSpace {
-    background-color: rgba(90, 65, 155, 0.90);
+    background-color: rgba(90, 65, 155, 0.9);
     padding: 2%;
     border: 2px solid black;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
-    width: 50%;
+    /* width: 50%; */
     margin-top: 0;
     z-index: 1000;
     /* margin-top: 32%; */
@@ -27,7 +27,7 @@ body {
     color: blanchedalmond;
 }
 #valaszSpace {
-    background-color: rgba(140, 100, 210, 0.90);
+    background-color: rgba(140, 100, 210, 0.9);
     width: 49.75%;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -39,11 +39,11 @@ body {
 }
 ::selection {
     background: blanchedalmond;
-    color: rgba(140, 100, 210, 0.90);
+    color: rgba(140, 100, 210, 0.9);
     text-shadow: none;
 }
-.gomba{
-    background-color: rgba(140, 100, 210, 0.90);
+.gomba {
+    background-color: rgba(140, 100, 210, 0.9);
     color: blanchedalmond;
     border: 2px solid blanchedalmond;
     border-radius: 10px;
@@ -54,11 +54,11 @@ body {
     font-size: x-large;
     box-shadow: 0 4.2px blanchedalmond;
 }
-span{
+span {
     font-size: larger;
     font-weight: bolder;
 }
-img{
+img {
     /* display: none; */
 }
 .segicsek {
@@ -67,9 +67,9 @@ img{
 .segicsek img {
     width: 100%;
 }
-#valasz{
+.valasz {
     color: blanchedalmond;
-    background-color: rgba(140, 100, 210, 0.90);
+    background-color: rgba(140, 100, 210, 0.9);
     margin: 0;
     width: 100%;
     border: none;
@@ -77,17 +77,18 @@ img{
     font-size: large;
     font-weight: bold;
 }
-#kerdojel{
+#kerdojel {
     padding: 0;
 }
-.valaszText{
-    font-weight:600;
+.valaszText {
+    font-weight: 600;
     padding-top: 1%;
 }
-#gama{
+#gama {
     /* position: absolute;
     top: 0; */
-}.renderif_1 {
+}
+.renderif_1 {
     display: flex;
     justify-content: center;
     align-items: stretch;
@@ -98,4 +99,40 @@ img{
     align-self: stretch;
     display: block;
     height: 100%;
+}
+#toolbar {
+    margin-top: 10px;
+}
+
+#rewards > div {
+    padding-inline: 5px;
+    text-align: end;
+}
+#rewards {
+    flex-grow: 1;
+}
+#main-container {
+    flex-grow: 2;
+}
+#help {
+    flex-grow: 1;
+}
+.game-content {
+    display: flex;
+}
+
+.highlighted {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: rgba(255, 255, 0, 0.5);
+    backdrop-filter: blur(8px);
+    border-radius: 4px;
+    padding: 4px;
+}
+
+@media only screen and (max-width: 850px) {
+    .game-content {
+        flex-direction: column;
+    }
 }

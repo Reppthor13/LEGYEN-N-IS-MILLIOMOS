@@ -93,22 +93,24 @@
                 const data = await res.json();
 
                 if (data?.success) {
+                    if (!window.Game) window.Game = {};
+                    window.Game.user = data.result;
                     window.location.href = '/';
                 }
 
                 document.querySelector('toast-manager')?.schedule(data.message, 0);
             });
 
-            document.getElementById('logoutBtn').addEventListener('click', async () => {
-                const res = await fetch('/api/sessions', {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
+            // document.getElementById('logoutBtn').addEventListener('click', async () => {
+            //     const res = await fetch('/api/sessions', {
+            //         method: 'DELETE',
+            //         credentials: 'include'
+            //     });
 
-                const data = await res.json();
+            //     const data = await res.json();
 
-                document.querySelector('toast-manager')?.schedule(data.message, 0);
-            });
+            //     document.querySelector('toast-manager')?.schedule(data.message, 0);
+            // });
 
             document.getElementById('deleteBtn').addEventListener('click', async () => {
                 const res = await fetch('/api/users', {

@@ -31,9 +31,9 @@ function start(request) {
         currentReward: 0,
         answers: null,
         availableHelps: {
-            mopile: 1,
-            authience: 1,
-            fitfycent: 1
+            mobile: 1,
+            crowd: 1,
+            halve: 1
         }
     };
 }
@@ -57,20 +57,22 @@ async function next(request) {
 
     let answers;
 
-    console.log('GAME.ANSWERS: ', game.answers);
-
     if (game.answers) {
         answers = game.answers;
     } else {
         answers = await database.selectanswers(question.id);
     }
 
+    console.log('GAME.ANSWERS: ', answers);
+    game.answers = answers;
+
     return {
         currentReward: game.currentReward,
         question,
         answers,
         level: game.difficulty,
-        availableHelps: game.availableHelps
+        availableHelps: game.availableHelps,
+        usedHelp: game.usedHelp
     };
 }
 
@@ -162,7 +164,6 @@ async function save(request) {
 }
 
 async function help(request, type) {
-    console.log(type);
     if (request.session.game.usedHelp) throw { code: 'USED' };
 
     const game = request.session.game;
@@ -182,8 +183,8 @@ async function help(request, type) {
 
     const onlystat = request.query.onlystat;
 
-    if (type === 'tflon') {
-        if (game.availableHelps.mopile <= 0) {
+    if (type === 'mobile') {
+        if (game.availableHelps.mobile <= 0) {
             throw { code: 'NOHELPREMAINING' };
         }
 
@@ -193,7 +194,7 @@ async function help(request, type) {
         //     }
         // }
 
-        game.availableHelps.mopile -= 1;
+        game.availableHelps.mobile -= 1;
 
         const random = answers[Math.floor(Math.random() * answers.length)];
         const possible = [correct, random];
@@ -203,12 +204,12 @@ async function help(request, type) {
             id: guess.id,
             valasz: guess.valasz
         };
-    } else if (type === 'kozonsek') {
-        if (game.availableHelps.authience <= 0) {
+    } else if (type === 'crowd') {
+        if (game.availableHelps.crowd <= 0) {
             throw { code: 'NOHELPREMAINING' };
         }
 
-        game.availableHelps.authience -= 1;
+        game.availableHelps.crowd -= 1;
 
         const rands = Array.from({ length: 4 }, () => Math.random().toFixed(2));
 
@@ -237,12 +238,12 @@ async function help(request, type) {
             },
             other: all
         };
-    } else if (type === '505050') {
-        if (game.availableHelps.fitfycent <= 0) {
+    } else if (type === 'halve') {
+        if (game.availableHelps.halve <= 0) {
             throw { code: 'NOHELPREMAINING' };
         }
 
-        game.availableHelps.fitfycent -= 1;
+        game.availableHelps.halve -= 1;
 
         let j = Math.floor(Math.random() * answers.length);
 

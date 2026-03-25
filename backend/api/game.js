@@ -1,10 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const database = require('../sql/database.js');
 const { upload, createResponse, authenticate } = require('../common.js');
-const fs = require('fs/promises');
-const { checkSchema, validationResult } = require('express-validator');
 const { start, next, check, finish, save, abort } = require('../game.js');
+
+router.get('/hasongoinggame', authenticate, async (request, response) => {
+    if (!request.session.game || !request.session.game.inprogress) {
+        response
+            .status(200)
+            .json(createResponse(true, { inprogress: false }), 'Nincs játék folyamatban');
+    } else {
+        response
+            .status(200)
+            .json(createResponse(true, { inprogress: true }), 'Nincs játék folyamatban');
+    }
+});
 
 router.get('/', authenticate, async (request, response) => {
     try {
@@ -47,12 +56,12 @@ router.post('/', authenticate, upload.none(), async (request, response) => {
         let message;
 
         if (success) {
-            message = "Helyes válasz"
+            message = 'Helyes válasz';
         } else {
-            message = "Helytelen válasz"
+            message = 'Helytelen válasz';
         }
 
-        response.status(200).json(createResponse(true, {success}, message));
+        response.status(200).json(createResponse(true, { success }, message));
     } catch (error) {
         console.log(error);
         response.status(500).json(createResponse(false, null, 'Hiba történt a játék során'));
