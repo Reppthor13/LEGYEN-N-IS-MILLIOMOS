@@ -1,5 +1,5 @@
 import * as net from './network.js';
-import {isLoggedIn} from "./common.js";
+import { isLoggedIn } from './common.js';
 
 const rewards = {
     1: 10000,
@@ -138,6 +138,8 @@ export default class GameContainer extends HTMLElement {
     }
 
     async onAbortRequest(e) {
+        if (this._pending) return;
+
         this.toggleAnswerButtons(true);
 
         const response = await net.send('/api/game?action=abort');
@@ -292,6 +294,8 @@ export default class GameContainer extends HTMLElement {
             );
         });
 
+        this._elements.abortButton = abortButton;
+
         toolbar.appendChild(abortButton);
 
         for (const { text, helpType } of [
@@ -349,7 +353,7 @@ export default class GameContainer extends HTMLElement {
 
     async next(url = '/api/game') {
         if (!isLoggedIn()) {
-            window.location.href = "/auth";
+            window.location.href = '/auth';
         }
 
         this._elements.endScreen.textContent = '';
@@ -378,6 +382,7 @@ export default class GameContainer extends HTMLElement {
             this.toggleAllHelpButtons(true);
         }
 
+        this.toggleAbortButton(false);
         this.toggleUsedHelpButtons();
 
         this.update();
@@ -467,7 +472,15 @@ export default class GameContainer extends HTMLElement {
 
     onError() {
         this.innerHTML = '';
-        window.location.href = "/"
+        window.location.href = '/';
+    }
+
+    toggleAbortButton(disabled) {
+        const abortButton = this._elements.abortButton;
+
+        if (abortButton) {
+            abortButton.disabled = disabled;
+        }
     }
 
     async sendAnswer(e) {
@@ -491,6 +504,8 @@ export default class GameContainer extends HTMLElement {
 
         this._pending = true;
         this.toggleAnswerButtons(true);
+        this.toggleAbortButton(true);
+        this.toggleAllHelpButtons(true);
 
         try {
             const formData = new FormData();

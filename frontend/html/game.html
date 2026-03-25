@@ -15,8 +15,8 @@
     <body>
         <div id="account" hidden>
             <span>Bejelentkezve mint: <span id="username"></span></span>
-            <button id="logoutBtn" class="gonb">Kijelentkezés</button>
-            <button id="deleteBtn" class="gonb">Profil törlése</button>
+            <button id="logoutBtn" class="gonb" hidden>Kijelentkezés</button>
+            <button id="deleteBtn" class="gonb" hidden>Profil törlése</button>
         </div>
 
         <hr />
@@ -84,6 +84,16 @@
             } else {
                 document.querySelector('#account').hidden = false;
                 document.querySelector('#username').textContent = window.Game.user.username;
+
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.hidden = false;
+                }
+
+                const deleteBtn = document.getElementById('deleteBtn');
+                if (deleteBtn) {
+                    deleteBtn.hidden = false;
+                }
             }
         </script>
     </body>
