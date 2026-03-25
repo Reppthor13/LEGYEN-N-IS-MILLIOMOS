@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="hu">
     <head>
         <meta charset="UTF-8" />
@@ -19,7 +19,7 @@
     <body>
         <a href="/">Főoldal</a>
         <center>
-            <form id="registerForm" class="forms">
+            <form id="registerForm" class="forms" hidden>
                 <h2>Regisztráció</h2>
                 <input name="username" placeholder="Username" />
                 <input name="display_name" placeholder="Display name" />
@@ -34,7 +34,7 @@
                 <hr />
             </form>
 
-            <form id="loginForm" class="forms" hidden>
+            <form id="loginForm" class="forms">
                 <h2>Bejelentkezés</h2>
                 <input name="username" placeholder="Username" required />
                 <input name="password" type="password" placeholder="Password" required />
@@ -112,7 +112,7 @@
         </script>
 
         <script type="module">
-            import {isLoggedIn} from "/javascript/common.js";
+            import { isLoggedIn } from '/javascript/common.js';
 
             try {
                 const response = await fetch('/api/sessions', {
@@ -131,7 +131,7 @@
             }
 
             if (isLoggedIn()) {
-                window.location.href = "/"
+                window.location.href = '/';
             }
         </script>
     </body>
