@@ -1,4 +1,5 @@
 import * as net from './network.js';
+import {isLoggedIn} from "./common.js";
 
 const rewards = {
     1: 10000,
@@ -346,9 +347,11 @@ export default class GameContainer extends HTMLElement {
             'Nyeremény: ' + this._currentData?.reward + ' forint';
     }
 
-    displayWin() {}
-
     async next(url = '/api/game') {
+        if (!isLoggedIn()) {
+            window.location.href = "/auth";
+        }
+
         this._elements.endScreen.textContent = '';
         this._elements.help.textContent = '';
 
@@ -464,6 +467,7 @@ export default class GameContainer extends HTMLElement {
 
     onError() {
         this.innerHTML = '';
+        window.location.href = "/"
     }
 
     async sendAnswer(e) {
@@ -498,10 +502,12 @@ export default class GameContainer extends HTMLElement {
 
             if (!success) {
                 this.onError();
+                return;
             }
 
             this.highlightAnswerResult(button, result.success);
         } catch (error) {
+            console.error(error);
             console.error('An error occured while processing your answer.');
         } finally {
             this._pending = false;

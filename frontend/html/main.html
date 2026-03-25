@@ -46,8 +46,6 @@
                 >
                 <hr />
             </form>
-
-            <button id="deleteBtn" class="gonb">Profil törlése</button>
         </center>
 
         <toast-manager></toast-manager>
@@ -111,21 +109,30 @@
 
             //     document.querySelector('toast-manager')?.schedule(data.message, 0);
             // });
+        </script>
 
-            document.getElementById('deleteBtn').addEventListener('click', async () => {
-                const res = await fetch('/api/users', {
-                    method: 'DELETE',
+        <script type="module">
+            import {isLoggedIn} from "/javascript/common.js";
+
+            try {
+                const response = await fetch('/api/sessions', {
+                    method: 'POST',
                     credentials: 'include'
                 });
 
-                const data = await res.json();
+                const data = await response.json();
 
                 if (data?.success) {
-                    window.location.href = '/main';
+                    if (!window.Game) window.Game = {};
+                    window.Game.user = data.result;
                 }
+            } catch {
+                console.error('An error occured during auto-login.');
+            }
 
-                document.querySelector('toast-manager')?.schedule(data.message, 0);
-            });
+            if (isLoggedIn()) {
+                window.location.href = "/"
+            }
         </script>
     </body>
 </html>

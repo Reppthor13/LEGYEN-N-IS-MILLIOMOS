@@ -14,11 +14,14 @@
         <div id="account" hidden>
             <span>Bejelentkezve mint: <span id="username"></span></span>
             <button id="logoutBtn" class="gonb">Kijelentkezés</button>
+            <button id="deleteBtn" class="gonb">Profil törlése</button>
         </div>
 
         <hr />
 
         <center><game-container></game-container></center>
+
+        <toast-manager></toast-manager>
 
         <script>
             document.getElementById('logoutBtn').addEventListener('click', async () => {
@@ -31,6 +34,23 @@
 
                 if (data?.success) {
                     window.location.href = '/main';
+                }
+
+                document.querySelector('toast-manager')?.schedule(data.message, 0);
+            });
+
+            document.getElementById('deleteBtn').addEventListener('click', async () => {
+                const res = await fetch('/api/users', {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                const data = await res.json();
+
+                if (data?.success) {
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 3000);
                 }
 
                 document.querySelector('toast-manager')?.schedule(data.message, 0);
